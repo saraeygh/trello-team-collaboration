@@ -19,6 +19,13 @@ In this app you can easily manage your project tasks with your team. You and all
 ## Models designed based on below ERD
 ![trello-team-collaboration](erd.jpg)
 
+The ERD illustrates the entities, relationships, and attributes within the database. It serves as a reference for understanding how the data is organized and connected in the application.
+
+## Technologies Used
+- Django
+- Python
+- HTML/CSS
+
 ## Installation
 To run the Project Management Tool locally, follow these steps:
 
