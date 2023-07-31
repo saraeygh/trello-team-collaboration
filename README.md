@@ -13,7 +13,6 @@ In this app you can easily manage your project tasks with your team. You and all
 - Labels: Categorize task with customizable labels, such as priority levels or task types.
 - Comments and Attachments: Collaborate on cards by adding comments and attaching files.
 - Search and Filter: Quickly find cards using search and filter options.
-- Notifications: Stay updated with real-time notifications for board and card activities.
 - User Accounts: Create user accounts to manage personal boards and tasks.
 
 ## Models designed based on below ERD
