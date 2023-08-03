@@ -1,9 +1,10 @@
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 from accounts.models import User
+from core.models import BaseModel, TimeMixin
 
 
-class Task(models.Model):
+class Task(TimeMixin, BaseModel):
     STATUS_CHOICES = (
         ("todo", _("To Do")),
         ("doing", _("Doing")),
@@ -74,7 +75,7 @@ class Task(models.Model):
         return self.title
 
 
-class Assignment(models.Model):
+class Assignment(TimeMixin, models.Model):
     task = models.ForeignKey(
         Task,
         on_delete=models.CASCADE,
@@ -94,11 +95,6 @@ class Assignment(models.Model):
         verbose_name=_("Assigned By"),
         on_delete=models.CASCADE,
         help_text="Select the user who is assigning the task."
-    )
-    assigned_at = models.DateTimeField(
-        auto_now_add=True,
-        verbose_name=_("Assigned At"),
-        help_text="The date and time at which the assignment was made."
     )
 
     def __str__(self):

@@ -30,27 +30,23 @@ class TaskModelAdmin(admin.ModelAdmin):
                 ),
         }),
     )
-
-    filter_horizontal = (
-        'assigned_to',
-        )
     readonly_fields = (
         'start_date',
         )
 
 
 class AssignmentModelAdmin(admin.ModelAdmin):
-    list_display = ('task', 'assigned_to', 'assigned_by', 'assigned_at')
-    list_filter = ('assigned_at',)
+    list_display = ('task', 'assigned_to', 'assigned_by', 'created_at')
+    list_filter = ('created_at',)
     search_fields = (
         'task__title',
         'assigned_to__username',
         'assigned_by__username'
         )
-    date_hierarchy = 'assigned_at'
-    ordering = ('-assigned_at',)
+    date_hierarchy = 'created_at'
+    ordering = ('-created_at',)
 
-    readonly_fields = ('assigned_at',)
+    readonly_fields = ('created_at',)
 
     fieldsets = (
         (_("Assignment Information"), {
@@ -58,13 +54,13 @@ class AssignmentModelAdmin(admin.ModelAdmin):
                 'task',
                 'assigned_to',
                 'assigned_by',
-                'assigned_at'
+                'created_at'
                 )
         }),
     )
 
     def has_add_permission(self, request):
-        return True
+        return False
 
     def has_delete_permission(self, request, obj=None):
         return False
