@@ -1,8 +1,10 @@
 from django.contrib import admin
-from .models import Workspace, Project, Task, Assignment
 from django.utils.translation import gettext_lazy as _
 
+from .models import Workspace, Project, Task, Assignment
 
+
+# Hossein
 @admin.register(Task)
 class TaskModelAdmin(admin.ModelAdmin):
     list_display = ("title", "start_date", "due_date", "status", "priority")
@@ -36,6 +38,7 @@ class TaskModelAdmin(admin.ModelAdmin):
         )
 
 
+# Hossein
 @admin.register(Assignment)
 class AssignmentModelAdmin(admin.ModelAdmin):
     list_display = ('task', 'assigned_to', 'assigned_by', 'created_at')
