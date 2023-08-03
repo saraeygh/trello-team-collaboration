@@ -27,7 +27,6 @@ class Workspace(TimeMixin, BaseModel):
         User,
         related_name='workspaces',
         help_text="Users who are members of this workspace.",
-        on_delete=models.CASCADE
     )
     access_level = models.IntegerField(
         choices=Access.choices,

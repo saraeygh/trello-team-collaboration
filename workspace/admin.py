@@ -8,7 +8,7 @@ from .models import Workspace, Project, Task, Assignment
 @admin.register(Task)
 class TaskModelAdmin(admin.ModelAdmin):
     list_display = ("title", "start_date", "due_date", "status", "priority")
-    list_filter = ("status", "priority", "assigned_to")
+    list_filter = ("status", "priority")
     search_fields = ("title", "description", "assigned_to__username")
     date_hierarchy = "due_date"
     ordering = ("-due_date",)
@@ -79,7 +79,7 @@ class AssignmentModelAdmin(admin.ModelAdmin):
 @admin.register(Workspace)
 class Workspace(admin.ModelAdmin):
     list_display = ['name', 'description', 'is_admin']
-    list_editable = ['description', 'name']
+    list_editable = ['description']
     list_filter = ['name']
     list_per_page = 10
 
@@ -94,6 +94,5 @@ class Workspace(admin.ModelAdmin):
 @admin.register(Project)
 class ProjectAdmin(admin.ModelAdmin):
     list_display = ['name', 'description']
-    list_editable = ['member', 'name', 'color']
-    list_filter = ['name', 'owner']
+    list_filter = ['name']
     list_per_page = 10
