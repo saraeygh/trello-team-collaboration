@@ -16,10 +16,11 @@ class Workspace(admin.ModelAdmin):
             return 'admin'
         return 'member'
 
+
 # Mahdieh
 @admin.register(models.Project)
 class ProjectAdmin(admin.ModelAdmin):
-    list_display = ['name', 'description', 'members', 'color', 'owner']
+    list_display = ['name', 'description']
     list_editable = ['member', 'name', 'color']
     list_filter = ['name', 'owner']
     list_per_page = 10
