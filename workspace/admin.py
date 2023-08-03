@@ -1,8 +1,9 @@
 from django.contrib import admin
-from .models import Task, Assignment
+from .models import Workspace, Project, Task, Assignment
 from django.utils.translation import gettext_lazy as _
 
 
+@admin.register(Task)
 class TaskModelAdmin(admin.ModelAdmin):
     list_display = ("title", "start_date", "due_date", "status", "priority")
     list_filter = ("status", "priority", "assigned_to")
@@ -35,6 +36,7 @@ class TaskModelAdmin(admin.ModelAdmin):
         )
 
 
+@admin.register(Assignment)
 class AssignmentModelAdmin(admin.ModelAdmin):
     list_display = ('task', 'assigned_to', 'assigned_by', 'created_at')
     list_filter = ('created_at',)
@@ -70,5 +72,25 @@ class AssignmentModelAdmin(admin.ModelAdmin):
         return queryset.select_related('task', 'assigned_to', 'assigned_by')
 
 
-admin.site.register(Task, TaskModelAdmin)
-admin.site.register(Assignment, AssignmentModelAdmin)
+# Mahdieh
+@admin.register(Workspace)
+class Workspace(admin.ModelAdmin):
+    list_display = ['name', 'description', 'is_admin']
+    list_editable = ['description', 'name']
+    list_filter = ['name']
+    list_per_page = 10
+
+    @admin.display(ordering='access_level')
+    def is_admin(self, project):
+        if Workspace.access_level == 2:
+            return 'admin'
+        return 'member'
+
+
+# Mahdieh
+@admin.register(Project)
+class ProjectAdmin(admin.ModelAdmin):
+    list_display = ['name', 'description']
+    list_editable = ['member', 'name', 'color']
+    list_filter = ['name', 'owner']
+    list_per_page = 10
