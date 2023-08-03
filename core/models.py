@@ -2,8 +2,23 @@ from django.utils.translation import gettext_lazy as _
 from django.db import models
 
 
+# Reza
+class ActiveObjects(models.Manager):
+    def get_queryset(self):
+        return super().get_queryset().filter(soft_delete=False)
+
+
+# Reza
+class DeactiveObjects(models.Manager):
+    def get_queryset(self):
+        return super().get_queryset().filter(soft_delete=True)
+
+
 # RezaS
 class BaseModel(models.Model):
+
+    objects = ActiveObjects()
+    archived = DeactiveObjects()
 
     soft_delete = models.BooleanField(
         default=False,
