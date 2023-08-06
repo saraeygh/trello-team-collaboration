@@ -4,12 +4,37 @@ from django.utils.translation import gettext_lazy as _
 
 from .models import (Workspace,
                      Project,
+                     WorkspaceMember,
+                     ProjectMember,
                      Task,
                      Assignment,
                      Label,
                      LabeledTask,
                      Comment
                      )
+
+
+@admin.register(Workspace)
+class WorkspaceAdmin(admin.ModelAdmin):
+    list_display = ['name', 'description']
+
+
+# Mahdieh
+@admin.register(Project)
+class ProjectAdmin(admin.ModelAdmin):
+    list_display = ['name', 'description', 'workspace']
+
+
+# Mahdieh
+@admin.register(WorkspaceMember)
+class WorkspaceMemberAdmin(admin.ModelAdmin):
+    list_display = ['workspace', 'member', 'access_level']
+
+
+# Mahdieh
+@admin.register(ProjectMember)
+class ProjectMemberAdmin(admin.ModelAdmin):
+    list_display = ['project', 'member']
 
 
 # Hossein
@@ -82,35 +107,6 @@ class AssignmentModelAdmin(admin.ModelAdmin):
     def get_queryset(self, request):
         queryset = super().get_queryset(request)
         return queryset.select_related('task', 'assigned_to', 'assigned_by')
-
-
-# Mahdieh
-@admin.register(WorkspaceMember)
-class WorkspaceMember(admin.ModelAdmin):
-    list_display = ['created_at', 'access_level']
-#    list_filter = ['name']
-    list_per_page = 10
-
-# Mahdieh
-@admin.register(ProjectMember)
-class ProjectMemberAdmin(admin.ModelAdmin):
-    list_display = ['members', 'created_at']
-    list_filter = ['created_at']
-    list_per_page = 10
-
-@admin.register(Workspace)
-class Workspace(admin.ModelAdmin):
-    list_display = ['name', 'description', 'access_level']
-    list_filter = ['name']
-    list_per_page = 10
-
-
-# Mahdieh
-@admin.register(Project)
-class ProjectAdmin(admin.ModelAdmin):
-    list_display = ['name', 'description']
-    list_filter = ['name']
-    list_per_page = 10
 
 
 # Reza
