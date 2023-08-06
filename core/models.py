@@ -17,15 +17,12 @@ class DeactiveObjects(models.Manager):
 # RezaS
 class BaseModel(models.Model):
 
-    objects = ActiveObjects()
-    archived = DeactiveObjects()
-
     soft_delete = models.BooleanField(
         default=False,
         verbose_name=_("Soft delete")
         )
 
-    def delete(self):
+    def delete(self, *args, **kwargs):
         self.soft_delete = True
         self.save()
 

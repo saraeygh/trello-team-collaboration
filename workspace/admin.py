@@ -1,7 +1,15 @@
+from typing import Any
 from django.contrib import admin
 from django.utils.translation import gettext_lazy as _
 
-from .models import ProjectMember, Workspace, Project, Task, Assignment, WorkspaceMember
+from .models import (Workspace,
+                     Project,
+                     Task,
+                     Assignment,
+                     Label,
+                     LabeledTask,
+                     Comment
+                     )
 
 
 # Hossein
@@ -90,3 +98,73 @@ class ProjectMemberAdmin(admin.ModelAdmin):
     list_filter = ['created_at']
     list_per_page = 10
 
+@admin.register(Workspace)
+class Workspace(admin.ModelAdmin):
+    list_display = ['name', 'description', 'access_level']
+    list_filter = ['name']
+    list_per_page = 10
+
+
+# Mahdieh
+@admin.register(Project)
+class ProjectAdmin(admin.ModelAdmin):
+    list_display = ['name', 'description']
+    list_filter = ['name']
+    list_per_page = 10
+
+
+# Reza
+@admin.register(Label)
+class LabelAdmin(admin.ModelAdmin):
+    list_display = ('name',)
+    search_fields = ('name',)
+    date_hierarchy = 'updated_at'
+
+    def save_model(self, request: Any, obj: Any, form: Any, change: Any):
+        label, created = Label.objects.get_or_create(name=obj.name)
+        if created:
+            return label
+        label.save()
+        return label
+
+
+# Reza
+@admin.register(LabeledTask)
+class LabeledTaskAdmin(admin.ModelAdmin):
+    pass
+
+
+# Reza
+@admin.register(Comment)
+class CommentAdmin(admin.ModelAdmin):
+    list_display = ('user', 'task', 'text', 'soft_delete')
+    search_fields = ('user', 'task', 'text')
+    list_display_links = ('user', 'task', 'text')
+    list_filter = ('soft_delete',)
+    date_hierarchy = 'updated_at'
+
+    fieldsets = (
+        (None, {
+            'fields': (
+                'user',
+                'task',
+                'text',
+                )
+        }),
+    )
+
+    actions = ('soft_delete', 'reactivate')
+
+    @admin.action(description='Logically delete selected comments')
+    def soft_delete(self, request, queryset):
+        for comment in queryset:
+            comment.soft_delete = True
+            comment.save()
+        return None
+
+    @admin.action(description='Reactivate selected comments')
+    def reactivate(self, request, queryset):
+        for comment in queryset:
+            comment.soft_delete = False
+            comment.save()
+        return None
