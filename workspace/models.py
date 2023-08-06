@@ -31,6 +31,7 @@ class WorkspaceMember(TimeMixin, BaseModel):
         MEMBER = 1  # Can view and move only own items
         ADMIN = 2  # Can  add and remove members and modify project settings.
 
+
     workspace =models.ForeignKey(
         Workspace,
         on_delete=models.CASCADE,

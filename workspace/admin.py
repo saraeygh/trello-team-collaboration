@@ -82,7 +82,6 @@ class WorkspaceMember(admin.ModelAdmin):
     list_display = ['created_at', 'access_level']
 #    list_filter = ['name']
     list_per_page = 10
-    
 
 # Mahdieh
 @admin.register(ProjectMember)
