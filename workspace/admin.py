@@ -1,12 +1,14 @@
 from django.contrib import admin
-from .models import Workspace, Project, Task, Assignment
 from django.utils.translation import gettext_lazy as _
 
+from .models import ProjectMember, Workspace, Project, Task, Assignment, WorkspaceMember
 
+
+# Hossein
 @admin.register(Task)
 class TaskModelAdmin(admin.ModelAdmin):
-    list_display = ("title", "start_date", "due_date", "status", "priority")
-    list_filter = ("status", "priority", "assigned_to")
+    list_display = ("title", "start_date", "due_date", "status", "priority", "project")
+    list_filter = ("status", "priority")
     search_fields = ("title", "description", "assigned_to__username")
     date_hierarchy = "due_date"
     ordering = ("-due_date",)
@@ -18,7 +20,8 @@ class TaskModelAdmin(admin.ModelAdmin):
                 'description',
                 'due_date',
                 'status',
-                'priority'
+                'priority',
+                'project',
                 )
         }),
         (_("Date and Time"), {
@@ -36,6 +39,7 @@ class TaskModelAdmin(admin.ModelAdmin):
         )
 
 
+# Hossein
 @admin.register(Assignment)
 class AssignmentModelAdmin(admin.ModelAdmin):
     list_display = ('task', 'assigned_to', 'assigned_by', 'created_at')
@@ -62,7 +66,7 @@ class AssignmentModelAdmin(admin.ModelAdmin):
     )
 
     def has_add_permission(self, request):
-        return False
+        return True
 
     def has_delete_permission(self, request, obj=None):
         return False
@@ -73,24 +77,17 @@ class AssignmentModelAdmin(admin.ModelAdmin):
 
 
 # Mahdieh
-@admin.register(Workspace)
-class Workspace(admin.ModelAdmin):
-    list_display = ['name', 'description', 'is_admin']
-    list_editable = ['description', 'name']
-    list_filter = ['name']
+@admin.register(WorkspaceMember)
+class WorkspaceMember(admin.ModelAdmin):
+    list_display = ['created_at', 'description', 'access_level']
+#    list_filter = ['name']
     list_per_page = 10
-
-    @admin.display(ordering='access_level')
-    def is_admin(self, project):
-        if Workspace.access_level == 2:
-            return 'admin'
-        return 'member'
-
+    
 
 # Mahdieh
-@admin.register(Project)
-class ProjectAdmin(admin.ModelAdmin):
-    list_display = ['name', 'description']
-    list_editable = ['member', 'name', 'color']
-    list_filter = ['name', 'owner']
+@admin.register(ProjectMember)
+class ProjectMemberAdmin(admin.ModelAdmin):
+    list_display = ['description', 'created_at']
+    list_filter = ['created_at']
     list_per_page = 10
+
