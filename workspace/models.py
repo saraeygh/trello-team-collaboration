@@ -1,8 +1,7 @@
 from django.db import models
 from django.utils.translation import gettext_lazy as _
-
-from accounts.models import User
 from core.models import BaseModel, TimeMixin
+from accounts.models import User
 
 
 # Mahdieh
@@ -38,16 +37,50 @@ class WorkspaceMember(TimeMixin, BaseModel):
         null=True,
         help_text=_('Enter a description for the workspace')
     )
+
     members = models.ForeignKey(
         User,
         related_name='workspaces',
         on_delete=models.CASCADE,
         help_text=_("Users who are members of this workspace."),
     )
+
     access_level = models.IntegerField(
         choices=Access.choices,
         default=1
     )
+    
+    def is_admin(self, user):
+        """Check if a given user is an admin in the workspace."""
+        return self.members.through.objects.filter(
+            user=user, 
+            workspace=self, 
+            access_level=Workspace.Access.ADMIN).exists()
+
+    def add_member(self, user, access_level=Access.MEMBER):
+        """Add a user as a member to the workspace with the specified access level."""
+        if self.is_admin(user):
+            membership, created = self.members.through.objects.get_or_create(
+                user=user, 
+                workspace=self)
+            membership,created.save()
+
+    def remove_member(self, request, user):
+        """Remove a user from the workspace's members if the requester is an admin."""
+        if self.is_admin(request):
+            self.members.remove(pk=user)
+
+    def create_project(self, name, description=None):
+        """Create a new project within the workspace if the requester is an admin."""
+        return Project.objects.create(
+            name=self.name,
+            description=self.description,
+            workspace=self)
+
+    def delete_project(self, request, project):
+        """Delete a project within the workspace if the requester is an admin."""
+        if self.is_admin(request):
+            project.delete()
 
 
 # Mahdieh
@@ -99,8 +132,23 @@ class ProjectMember(TimeMixin, BaseModel):
         help_text=_("Select the workspace this project belongs to.")
     )
 
-    def __str__(self):
-        return self.name
+    def get_tasks(self):
+        """Get all tasks associated with the project."""
+        return Task.objects.filter(project=self)
+
+    #def create_task(self, title, description=None):
+    #    """Create a new task in the project.
+    #    """
+    #    return Task.objects.create(
+    #        description=description,
+    #        title=title
+    #    )
+
+    def get_members(self):
+        """
+        Get all members associated with the project.
+        """
+        return self.members.all()
 
 
 # Hossein
