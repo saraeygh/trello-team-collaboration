@@ -1,7 +1,0 @@
-{
-    "python.testing.pytestArgs": [
-        "workspace"
-    ],
-    "python.testing.unittestEnabled": false,
-    "python.testing.pytestEnabled": true
-}
