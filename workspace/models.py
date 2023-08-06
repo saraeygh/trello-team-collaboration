@@ -13,6 +13,12 @@ class Workspace(TimeMixin, BaseModel):
         help_text=_('Enter the name of the workspace.')
     )
      
+     description = models.TextField(
+        blank=True,
+        null=True,
+        help_text=_('Enter a description for the workspace')
+    )
+    
      def __str__(self):
         return self.name
      
@@ -30,12 +36,6 @@ class WorkspaceMember(TimeMixin, BaseModel):
         on_delete=models.CASCADE,
         verbose_name=_('Workspace'),
         related_name='Workspace'
-    )
-
-    description = models.TextField(
-        blank=True,
-        null=True,
-        help_text=_('Enter a description for the workspace')
     )
 
     members = models.ForeignKey(
@@ -92,6 +92,12 @@ class Project(TimeMixin, BaseModel):
         help_text=_('Enter the name of the project')
     )
 
+    description = models.TextField(
+        blank=True,
+        null=True,
+        help_text=_("Enter a description for the project.")
+    )
+
     def __str__(self):
         return self.name
 
@@ -104,12 +110,6 @@ class ProjectMember(TimeMixin, BaseModel):
         verbose_name=_('Project'),
         related_name='Project',
         on_delete=models.CASCADE,
-    )
-
-    description = models.TextField(
-        blank=True,
-        null=True,
-        help_text=_("Enter a description for the project.")
     )
 
     # image = models.ImageField(
@@ -256,30 +256,17 @@ class Assignment(TimeMixin, models.Model):
 
 
 # Reza
-class Label(TimeMixin):
+class Label(TimeMixin, BaseModel):
     name = models.CharField(
         verbose_name=_("Label name"),
         help_text=_("Insert label name"),
         max_length=50
         )
 
-    def __str__(self):
-        return self.name
-
-
-# Reza
-class LabeledTask(TimeMixin):
-    label = models.ForeignKey(
-        Label,
-        verbose_name=_("Label"),
-        help_text=_("Label to use"),
-        on_delete=models.CASCADE
-        )
-
-    task = models.ForeignKey(
-        Task,
-        verbose_name=_("Task to label"),
-        on_delete=models.CASCADE
+    task = models.ManyToManyField(
+        "workspace.task",
+        verbose_name=_("Task"),
+        help_text="Task(s) with this label"
         )
 
 
@@ -291,7 +278,7 @@ class Comment(TimeMixin, BaseModel):
         )
 
     user = models.ForeignKey(
-        User,
+        "accounts.user",
         verbose_name=_("user"),
         on_delete=models.CASCADE
         )
@@ -301,6 +288,3 @@ class Comment(TimeMixin, BaseModel):
         verbose_name=_("Task"),
         on_delete=models.CASCADE
         )
-
-    def __str__(self):
-        return self.text

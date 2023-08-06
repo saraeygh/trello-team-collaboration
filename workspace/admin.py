@@ -79,7 +79,7 @@ class AssignmentModelAdmin(admin.ModelAdmin):
 # Mahdieh
 @admin.register(WorkspaceMember)
 class WorkspaceMember(admin.ModelAdmin):
-    list_display = ['created_at', 'description', 'access_level']
+    list_display = ['created_at', 'access_level']
 #    list_filter = ['name']
     list_per_page = 10
     
@@ -87,7 +87,7 @@ class WorkspaceMember(admin.ModelAdmin):
 # Mahdieh
 @admin.register(ProjectMember)
 class ProjectMemberAdmin(admin.ModelAdmin):
-    list_display = ['description', 'created_at']
+    list_display = ['members', 'created_at']
     list_filter = ['created_at']
     list_per_page = 10
 
