@@ -1,8 +1,9 @@
+from typing import Iterable, Optional
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
-from accounts.models import User
 from core.models import BaseModel, TimeMixin
+from accounts.models import User
 
 
 # Mahdieh
@@ -178,18 +179,34 @@ class Assignment(TimeMixin, models.Model):
 
 
 # Reza
-class Label(TimeMixin, BaseModel):
+class Label(TimeMixin, models.Model):
     name = models.CharField(
         verbose_name=_("Label name"),
         help_text=_("Insert label name"),
         max_length=50
         )
 
-    task = models.ManyToManyField(
-        "workspace.task",
-        verbose_name=_("Task"),
-        help_text="Task(s) with this label"
+    def __str__(self):
+        return self.name
+
+
+# Reza
+class LabeledTask(TimeMixin, models.Model):
+    label = models.ForeignKey(
+        Label,
+        verbose_name=_("Label"),
+        help_text=_("Label to use"),
+        on_delete=models.CASCADE
         )
+
+    task = models.ForeignKey(
+        Task,
+        verbose_name=_("Task to label"),
+        on_delete=models.CASCADE
+        )
+
+    def __str__(self):
+        return f"Label ({self.label.name}) on task ({self.task.title})"
 
 
 # Reza
@@ -200,7 +217,7 @@ class Comment(TimeMixin, BaseModel):
         )
 
     user = models.ForeignKey(
-        "accounts.user",
+        User,
         verbose_name=_("user"),
         on_delete=models.CASCADE
         )
@@ -210,3 +227,6 @@ class Comment(TimeMixin, BaseModel):
         verbose_name=_("Task"),
         on_delete=models.CASCADE
         )
+
+    def __str__(self):
+        return self.text

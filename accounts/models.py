@@ -5,18 +5,25 @@ from django.utils.translation import gettext_lazy as _
 from core.models import BaseModel, TimeMixin
 
 
-# RezaS
-class User(AbstractUser, BaseModel):
+# Reza
+class User(BaseModel, AbstractUser):
     pass
 
 
 # RezaS
-class UserProfile(TimeMixin, BaseModel):
+class UserProfile(BaseModel, TimeMixin):
 
     GENDER_CHOICES = {
-        ('male', 'Male'),
-        ('female', 'Female'),
+        ('m', 'Male'),
+        ('f', 'Female'),
     }
+
+    gender = models.CharField(
+        verbose_name=_("Gender"),
+        help_text=_("Select your gender"),
+        choices=GENDER_CHOICES,
+        max_length=1,
+        )
 
     birthdate = models.DateField(
         verbose_name=_("Birthdate"),
@@ -33,9 +40,9 @@ class UserProfile(TimeMixin, BaseModel):
         null=True
         )
 
-    gender = models.CharField(
-        verbose_name=_("Gender"),
-        help_text=_("Select your gender"),
-        choices=GENDER_CHOICES,
-        max_length=10
+    user = models.OneToOneField(
+        User,
+        verbose_name=_("User"),
+        help_text=_("Profile for user"),
+        on_delete=models.CASCADE
         )
