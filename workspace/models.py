@@ -1,77 +1,99 @@
-from typing import Iterable, Optional
 from django.db import models
 from django.utils.translation import gettext_lazy as _
-
 from core.models import BaseModel, TimeMixin
 from accounts.models import User
 
 
 # Mahdieh
-class Workspace(TimeMixin, BaseModel):
-
-    class Access(models.IntegerChoices):
-        MEMBER = 1  # Can view and create and move only own items
-        ADMIN = 2  # Can remove members and modify project settings.
-
+class Workspace(TimeMixin, models.Model):
     name = models.CharField(
         max_length=255,
-        blank=False,
-        null=False,
-        help_text='Enter the name of the workspace.'
-    )
+        verbose_name=_("Workspace name"),
+        help_text=_('Enter the name of the workspace.')
+        )
+
     description = models.TextField(
-        blank=True,
-        null=True,
-        help_text='Enter a description for the workspace'
-    )
-    members = models.ManyToManyField(
-        User,
-        related_name='workspaces',
-        help_text="Users who are members of this workspace.",
-    )
-    access_level = models.IntegerField(
-        choices=Access.choices,
-        default=1
-    )
+        blank=True, null=True,
+        help_text=_('Enter a description for the workspace')
+        )
 
     def __str__(self):
         return self.name
 
-    class Meta:
-        ordering = ['name']
+
+# Mahdieh
+class WorkspaceMember(TimeMixin, models.Model):
+
+    class Access(models.IntegerChoices):
+        MEMBER = 1  # Can view and move only own items
+        ADMIN = 2  # Can  add and remove members and modify project settings.
+
+    workspace = models.ForeignKey(
+        Workspace,
+        on_delete=models.CASCADE,
+        verbose_name=_('Workspace'),
+        related_name='workspace',
+        )
+
+    member = models.ForeignKey(
+        User,
+        related_name='member',
+        on_delete=models.CASCADE,
+        help_text=_("Users who are members of this workspace."),
+        )
+
+    access_level = models.IntegerField(
+        choices=Access.choices,
+        default=1
+        )
+
+    def add_member(self):
+        self.access_level = 1
+        self.save()
+
+    def remove_member(self):
+        self.delete()
 
 
 # Mahdieh
 class Project(TimeMixin, BaseModel):
-
     name = models.CharField(
-        max_length=255,
-        blank=False,
-        null=False,
-        help_text='Enter the name of the project'
-    )
-    description = models.TextField(
-        blank=True,
-        null=True,
-        help_text="Enter a description for the project."
-    )
+        max_length=200,
+        verbose_name=_("Project name"),
+        help_text=_('Enter the name of the project')
+        )
 
-    # image = models.ImageField(
-    #     blank=True,
-    #     null=True,
-    #     upload_to='board_images',
-    #     help_text='Upload image to project'
-    # )
+    description = models.TextField(
+        blank=True, null=True,
+        help_text=_("Enter a description for the project.")
+        )
 
     workspace = models.ForeignKey(
         Workspace,
         on_delete=models.CASCADE,
         related_name='project',
-        help_text="Select the workspace this project belongs to."
-    )
+        help_text=_("Select the workspace this project belongs to.")
+        )
 
     def __str__(self):
         return self.name
+
+
+# Mahdieh
+class ProjectMember(TimeMixin, BaseModel):
+
+    project = models.ForeignKey(
+        Project,
+        verbose_name=_('Project'),
+        related_name='project',
+        on_delete=models.CASCADE,
+        )
+
+    member = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        help_text=_("Users who are members of this workspace."),
+        )
 
 
 # Hossein
@@ -93,7 +115,7 @@ class Task(TimeMixin, BaseModel):
     title = models.CharField(
         verbose_name=_("Title"),
         max_length=250,
-        help_text="Enter the title of the task."
+        help_text=_("Enter the title of the task.")
         )
 
     description = models.TextField(
