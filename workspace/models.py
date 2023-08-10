@@ -2,6 +2,7 @@ from django.db import models
 from django.utils.translation import gettext_lazy as _
 from core.models import BaseModel, TimeMixin
 from accounts.models import User
+from django.utils import timezone
 
 
 # Mahdieh
@@ -168,6 +169,17 @@ class Task(TimeMixin, BaseModel):
 
     def __str__(self):
         return self.title
+
+    def remaining_time(self):
+        if self.due_date:
+            return self.due_date - timezone.now()
+        return None
+
+    def is_overdue(self):
+        return self.due_date and self.due_date < timezone.now()
+
+    def task_comments(self):
+        return Comment.objects.filter(task=self)
 
 
 # Hossein
