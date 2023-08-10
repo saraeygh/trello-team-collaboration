@@ -2,16 +2,28 @@ from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.utils.translation import gettext_lazy as _
 
-from core.models import BaseModel, TimeMixin
+from core.models import BaseModel
 
 
 # Reza
 class User(BaseModel, AbstractUser):
-    pass
+    email = models.EmailField(
+        verbose_name=_("email address"),
+        help_text=_("Required."),
+        unique=True,
+        )
 
+    first_name = models.CharField(
+        verbose_name=_("first name"),
+        help_text=_("Required."),
+        max_length=150,
+        )
 
-# RezaS
-class UserProfile(BaseModel, TimeMixin):
+    last_name = models.CharField(
+        verbose_name=_("last name"),
+        help_text=_("Required."),
+        max_length=150,
+        )
 
     GENDER_CHOICES = {
         ('m', 'Male'),
@@ -23,13 +35,15 @@ class UserProfile(BaseModel, TimeMixin):
         help_text=_("Select your gender"),
         choices=GENDER_CHOICES,
         max_length=1,
+        blank=True,
+        null=True,
         )
 
     birthdate = models.DateField(
         verbose_name=_("Birthdate"),
         help_text=_("Insert your birthday (Optional)"),
         blank=True,
-        null=True
+        null=True,
         )
 
     phone = models.CharField(
@@ -37,12 +51,6 @@ class UserProfile(BaseModel, TimeMixin):
         help_text=_("Insert your phone number (Optional)"),
         max_length=11,
         blank=True,
-        null=True
+        null=True,
         )
 
-    user = models.OneToOneField(
-        User,
-        verbose_name=_("User"),
-        help_text=_("Profile for user"),
-        on_delete=models.CASCADE
-        )
