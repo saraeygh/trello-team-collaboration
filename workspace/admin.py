@@ -2,6 +2,7 @@ from typing import Any
 from django.contrib import admin
 from django.utils.translation import gettext_lazy as _
 
+from core.admin import BaseAdmin
 from .models import (Workspace,
                      Project,
                      WorkspaceMember,
@@ -132,7 +133,7 @@ class LabeledTaskAdmin(admin.ModelAdmin):
 
 # Reza
 @admin.register(Comment)
-class CommentAdmin(admin.ModelAdmin):
+class CommentAdmin(BaseAdmin):
     list_display = ('user', 'task', 'text', 'soft_delete')
     search_fields = ('user', 'task', 'text')
     list_display_links = ('user', 'task', 'text')
@@ -148,19 +149,3 @@ class CommentAdmin(admin.ModelAdmin):
                 )
         }),
     )
-
-    actions = ('soft_delete', 'reactivate')
-
-    @admin.action(description='Logically delete selected comments')
-    def soft_delete(self, request, queryset):
-        for comment in queryset:
-            comment.soft_delete = True
-            comment.save()
-        return None
-
-    @admin.action(description='Reactivate selected comments')
-    def reactivate(self, request, queryset):
-        for comment in queryset:
-            comment.soft_delete = False
-            comment.save()
-        return None

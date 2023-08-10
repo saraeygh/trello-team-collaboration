@@ -2,48 +2,38 @@ from django.utils.translation import gettext_lazy as _
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 
-from .models import User, UserProfile
-
-
-# Reza
-class UserProfileInLine(admin.StackedInline):
-    model = UserProfile
-    exclude = ('soft_delete',)
+from core.admin import BaseAdmin
+from .models import User
 
 
 # Reza
 @admin.register(User)
-class UserAdmin(BaseUserAdmin):
+class UserAdmin(BaseAdmin, BaseUserAdmin):
 
-    list_display = ("username",
-                    "soft_delete",
+    list_display = ("soft_delete",
+                    "username",
                     "email",
+                    "phone",
                     "get_full_name",
-                    "date_joined"
+                    "gender",
+                    "birthdate",
+                    "date_joined",
                     )
 
     list_display_links = ("username", "email", "get_full_name")
-    list_filter = ("soft_delete", "is_staff", "is_superuser", "groups")
-    ordering = ("username", "-date_joined")
+    list_filter = ("soft_delete", "gender", "is_staff", "is_superuser", "groups")
+    ordering = ("-date_joined", "username")
     date_hierarchy = "date_joined"
     fieldsets = (
         (None, {"fields": ("username", "password")}),
-        (_("Personal info"), {"fields": ("first_name", "last_name", "email")}),
+        (_("Personal info"), {
+            "fields": (
+                "email",
+                "phone",
+                "gender",
+                "first_name",
+                "last_name",
+                "birthdate",
+            )
+            }),
     )
-    actions = ('soft_delete', 'reactivate')
-
-    @admin.action(description='Logically delete selected users')
-    def soft_delete(self, request, queryset):
-        for user in queryset:
-            user.soft_delete = True
-            user.save()
-        return None
-
-    @admin.action(description='Reactivate selected users')
-    def reactivate(self, request, queryset):
-        for user in queryset:
-            user.soft_delete = False
-            user.save()
-        return None
-
-    inlines = (UserProfileInLine,)

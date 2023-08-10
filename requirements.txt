@@ -5,3 +5,4 @@ markdown==3.4.4
 drf-nested-routers==0.93.4
 djoser==2.2.0
 djangorestframework_simplejwt==5.2.2
+drf-yasg==1.21.7

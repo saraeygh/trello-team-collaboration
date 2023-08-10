@@ -9,6 +9,7 @@ https://docs.djangoproject.com/en/4.2/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.2/ref/settings/
 """
+from datetime import timedelta
 import os
 from pathlib import Path
 
@@ -49,6 +50,7 @@ INSTALLED_APPS = [
     'django_filters',
     # For development
     'debug_toolbar',
+    'drf_yasg',
 ]
 
 MIDDLEWARE = [
@@ -174,4 +176,21 @@ LOGGING = {
 }
 
 # REST framework
-REST_FRAMEWORK = {}
+REST_FRAMEWORK = {
+    'COERCE_DECIMAL_TO_STRING': False,
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    ),
+}
+
+SIMPLE_JWT = {
+   'AUTH_HEADER_TYPES': ('JWT',),
+   "ACCESS_TOKEN_LIFETIME": timedelta(days=10),
+}
+
+DJOSER = {
+    'SERIALIZERS': {
+        'user_create': 'accounts.serializers.UserCreateSerializer',
+        'current_user': 'accounts.serializers.UserDetailSerializer',
+    },
+}
