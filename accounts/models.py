@@ -53,4 +53,3 @@ class User(BaseModel, AbstractUser):
         blank=True,
         null=True,
         )
-

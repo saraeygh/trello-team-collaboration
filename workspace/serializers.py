@@ -1,5 +1,9 @@
 from rest_framework import serializers
 from accounts.models import User
+from accounts.serializers import (
+    UserDetailSerializer,
+    UserSummaryDetailSerializer,
+)
 from .models import (
     Comment,
     Label,
@@ -10,18 +14,6 @@ from .models import (
     Assignment,
     WorkspaceMember,
     )
-
-
-class UserSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = User
-        fields = [
-            'id',
-            'username',
-            'email',
-            'first_name',
-            'last_name',
-        ]
 
 
 # class WorkspaceSerializer(serializers.ModelSerializer):
@@ -77,18 +69,23 @@ class UserSerializer(serializers.ModelSerializer):
 #         ]
 
 
-# class TaskSerializer(serializers.ModelSerializer):
+class TaskSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Task
+        fields = '__all__'
 
-#     class Meta:
-#         model = Task
-#         fields = "__all__"
 
+class AssignmentSerializer(serializers.ModelSerializer):
+    assigned_by = serializers.StringRelatedField()
+    assigned_to = serializers.StringRelatedField()
+    task = TaskSerializer()
 
-# class AssignmentSerializer(serializers.ModelSerializer):
-
-#     class Meta:
-#         model = Assignment
-#         fields = "__all__"
+    class Meta:
+        model = Assignment
+        fields = [
+            "assigned_to",
+            "task",
+        ]
 
 
 class LabelSerializer(serializers.ModelSerializer):
@@ -117,7 +114,7 @@ class LabeledTaskSerializer(serializers.ModelSerializer):
 class CommentSerializer(serializers.ModelSerializer):
 
     label = LabelSerializer()
-    user = UserSerializer()
+    user = UserSummaryDetailSerializer()
 
     class Meta:
         model = Comment

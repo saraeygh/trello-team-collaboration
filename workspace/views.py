@@ -16,8 +16,8 @@ from .serializers import (
     # WorkspaceMemberSerializer,
     # ProjectSerializer,
     # projectMemberSerializer,
-    # TaskSerializer,
-    # AssignmentSerializer,
+    TaskSerializer,
+    AssignmentSerializer,
     LabelSerializer,
     LabeledTaskSerializer,
     CommentSerializer,
@@ -64,30 +64,30 @@ from .serializers import (
 #             }
 
 
-# class TaskViewSet(ModelViewSet):
+class TaskViewSet(ModelViewSet):
 
-#     serializer_class = TaskSerializer
+    serializer_class = TaskSerializer
 
-#     def get_queryset(self):
-#         return Task.objects.filter(project_id=self.kwargs['project_pk'])
+    def get_queryset(self):
+        return Task.objects.filter(project_id=self.kwargs['project_pk'])
 
-#     def get_serializer_context(self):
-#         return {
-#             'project_id': self.kwargs['project_pk'],
-#             }
+    def get_serializer_context(self):
+        return {
+            'project_id': self.kwargs['project_pk'],
+            }
 
 
-# class AssignmentViewSet(ModelViewSet):
+class AssignmentViewSet(ModelViewSet):
 
-#     serializer_class = AssignmentSerializer
+    serializer_class = AssignmentSerializer
 
-#     def get_queryset(self):
-#         return Assignment.objects.filter(task_id=self.kwargs['task_pk'])
+    def get_queryset(self):
+        return Assignment.objects.filter(task_id=self.kwargs['task_pk'])
 
-#     def get_serializer_context(self):
-#         return {
-#             'task_id': self.kwargs['task_pk'],
-#             }
+    def get_serializer_context(self):
+        return {
+            'task_id': self.kwargs['task_pk'],
+            }
 
 
 class LabelViewSet(ModelViewSet):
