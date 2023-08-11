@@ -21,7 +21,7 @@ class WorkspaceMemberInline(admin.TabularInline):
 
 #Mahdieh
 @admin.register(Workspace)
-class WorkspaceAdmin(admin.ModelAdmin):
+class WorkspaceAdmin(BaseAdmin):
     list_display = ['name', 'description']
     list_filter = ['name', 'created_at', 'updated_at']
     inlines = [WorkspaceMemberInline]
@@ -46,7 +46,7 @@ class ProjectMemberInline(admin.TabularInline):
 
 # Mahdieh
 @admin.register(Project)
-class ProjectAdmin(admin.ModelAdmin):
+class ProjectAdmin(BaseAdmin):
     list_display = ['name', 'description', 'workspace']
     #prepopulated_fields = {
     #    'slug': ['name']
