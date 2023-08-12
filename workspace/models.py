@@ -49,10 +49,16 @@ class WorkspaceMember(TimeMixin, models.Model):
         )
 
     def add_member(self):
+        """
+        add member to group
+        """
         self.access_level = 1
         self.save()
 
     def remove_member(self):
+        """
+        remove a members from a group
+        """
         self.delete()
 
 
@@ -76,6 +82,20 @@ class Project(TimeMixin, BaseModel):
         help_text=_("Select the workspace this project belongs to.")
         )
 
+    deadline = models.DateTimeField(
+        verbose_name=_("Deadline"),
+        blank=True,
+        null=True,
+        auto_now_add=True,
+        help_text="The date and time when the project deadline."
+        )
+    
+    #slug = models.SlugField(
+    #    max_length=50,
+    #    default=11
+    #    )
+        
+    
     def __str__(self):
         return self.name
 

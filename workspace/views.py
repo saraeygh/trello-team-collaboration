@@ -12,56 +12,12 @@ from .models import (
     )
 
 from .serializers import (
-    # WorkspaceSerializer,
-    # WorkspaceMemberSerializer,
-    # ProjectSerializer,
-    # projectMemberSerializer,
     TaskSerializer,
     AssignmentSerializer,
     LabelSerializer,
     LabeledTaskSerializer,
     CommentSerializer,
     )
-
-
-# class WorkspaceViewSet(ModelViewSet):
-#     queryset = Workspace.objects.all()
-#     serializer_class = WorkspaceSerializer
-
-
-# class WorkspaceMemberViewSet(ModelViewSet):
-
-#     serializer_class = WorkspaceMemberSerializer
-
-#     def get_queryset(self):
-#         return WorkspaceMember.objects.filter(workspace_id=self.kwargs['workspace_pk'])
-
-#     def get_serializer_context(self):
-#         return {'workspace_id': self.kwargs['workspace_pk']}
-
-
-# class ProjectViewSet(ModelViewSet):
-
-#     serializer_class = ProjectSerializer
-
-#     def get_queryset(self):
-#         return Project.objects.filter(workspace_id=self.kwargs['workspace_pk'])
-
-#     def get_serializer_context(self):
-#         return {'workspace_id': self.kwargs['workspace_pk']}
-
-
-# class ProjectMemeberViewSet(ModelViewSet):
-
-#     serializer_class = projectMemberSerializer
-
-#     def get_queryset(self):
-#         return ProjectMember.objects.filter(project_id=self.kwargs['project_pk'])
-
-#     def get_serializer_context(self):
-#         return {
-#             'project_id': self.kwargs['project_pk'],
-#             }
 
 
 class TaskViewSet(ModelViewSet):

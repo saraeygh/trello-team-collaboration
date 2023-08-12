@@ -14,28 +14,66 @@ from .models import (Workspace,
                      Comment
                      )
 
+# Mahdieh
+class WorkspaceMemberInline(admin.TabularInline):
+    model = WorkspaceMember
 
+
+#Mahdieh
 @admin.register(Workspace)
-class WorkspaceAdmin(admin.ModelAdmin):
+class WorkspaceAdmin(BaseAdmin):
     list_display = ['name', 'description']
+    list_filter = ['name', 'created_at', 'updated_at']
+    inlines = [WorkspaceMemberInline]
+    date_hierarchy = 'created_at'
+    ordering = ('-created_at',)
+    search_fields = ('name',)
+    readonly_fields = ('created_at',)
 
+    fieldsets = (
+        (_("Workspace Information"), {
+            'fields': (
+                'name',
+                'description',
+                'created_at'
+                )
+        }),
+    )
+
+# Mahdieh
+class ProjectMemberInline(admin.TabularInline):
+    model = ProjectMember
 
 # Mahdieh
 @admin.register(Project)
-class ProjectAdmin(admin.ModelAdmin):
+class ProjectAdmin(BaseAdmin):
     list_display = ['name', 'description', 'workspace']
-
-
-# Mahdieh
-@admin.register(WorkspaceMember)
-class WorkspaceMemberAdmin(admin.ModelAdmin):
-    list_display = ['workspace', 'member', 'access_level']
-
-
-# Mahdieh
-@admin.register(ProjectMember)
-class ProjectMemberAdmin(admin.ModelAdmin):
-    list_display = ['project', 'member']
+    #prepopulated_fields = {
+    #    'slug': ['name']
+    #}
+    readonly_fields = ('created_at', 'deadline') 
+    inlines = [ProjectMemberInline]
+    #list_editable = ['name', 'description']
+    list_filter = ['name', 'created_at', 'updated_at']
+    search_fields = ['name']
+    fieldsets = (
+        (_("Project Information"), {
+            'fields': (
+                'name',
+                'description',
+                'workspace',
+                )
+        }),
+        (_("Date and Time"), {
+            'fields': (
+                'created_at',
+                'deadline'
+                ),
+            'classes': (
+                'collapse',
+                ),
+        }),
+    )
 
 
 # Hossein
@@ -109,6 +147,10 @@ class AssignmentModelAdmin(admin.ModelAdmin):
         queryset = super().get_queryset(request)
         return queryset.select_related('task', 'assigned_to', 'assigned_by')
 
+# Reza
+class LabeledTaskInline(admin.TabularInline):
+    model = LabeledTask
+
 
 # Reza
 @admin.register(Label)
@@ -116,7 +158,7 @@ class LabelAdmin(admin.ModelAdmin):
     list_display = ('name',)
     search_fields = ('name',)
     date_hierarchy = 'updated_at'
-
+    inlines = [LabeledTaskInline]
     def save_model(self, request: Any, obj: Any, form: Any, change: Any):
         label, created = Label.objects.get_or_create(name=obj.name)
         if created:
@@ -125,10 +167,7 @@ class LabelAdmin(admin.ModelAdmin):
         return label
 
 
-# Reza
-@admin.register(LabeledTask)
-class LabeledTaskAdmin(admin.ModelAdmin):
-    pass
+
 
 
 # Reza

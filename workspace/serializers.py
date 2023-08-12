@@ -1,9 +1,9 @@
 from rest_framework import serializers
-from accounts.models import User
 from accounts.serializers import (
     UserDetailSerializer,
     UserSummaryDetailSerializer,
 )
+from accounts.serializers import UserSummaryDetailSerializer
 from .models import (
     Comment,
     Label,
@@ -15,66 +15,70 @@ from .models import (
     WorkspaceMember,
     )
 
+# Mahdieh
+class WorkspaceSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Workspace
+        fields = [
+            'id',
+            'name',
+            'description',
+        ]
 
-# class WorkspaceSerializer(serializers.ModelSerializer):
-#     class Meta:
-#         model = Workspace
-#         fields = [
-#             'id',
-#             'name',
-#             'description',
-#         ]
+# Mahdieh
+class WorkspaceMemberSerializer(serializers.ModelSerializer):
 
+    workspace = WorkspaceSerializer()
+    member = UserSummaryDetailSerializer()
 
-# class WorkspaceMemberSerializer(serializers.ModelSerializer):
-
-#     workspace = WorkspaceSerializer()
-#     member = UserSerializer()
-
-#     class Meta:
-#         model = WorkspaceMember
-#         fields = [
-#             'id',
-#             'member',
-#             'workspace',
-#             'access_level',
-#         ]
-
-
-# class ProjectSerializer(serializers.ModelSerializer):
-
-#     workspace = WorkspaceSerializer()
-
-#     class Meta:
-#         model = Project
-#         fields = [
-#             'id',
-#             'name',
-#             'description',
-#             'workspace',
-#         ]
+    class Meta:
+        model = WorkspaceMember
+        fields = [
+            'id',
+            'member',
+            'workspace',
+            'access_level',
+        ]
 
 
-# class projectMemberSerializer(serializers.ModelSerializer):
+# Mahdieh
+class ProjectSerializer(serializers.ModelSerializer):
 
-#     project = ProjectSerializer()
-#     member = UserSerializer()
+    workspace = WorkspaceSerializer()
 
-#     class Meta:
-#         model = WorkspaceMember
-#         fields = [
-#             'id',
-#             'project',
-#             'member',
-#         ]
+    class Meta:
+        model = Project
+        fields = [
+            'id',
+            'name',
+            'description',
+            'workspace',
+        ]
 
 
+# Mahdieh
+class ProjectMemberSerializer(serializers.ModelSerializer):
+
+    project = ProjectSerializer()
+    member = UserSummaryDetailSerializer()
+
+    class Meta:
+        model = WorkspaceMember
+        fields = [
+            'id',
+            'project',
+            'member',
+        ]
+
+
+#Hossein
 class TaskSerializer(serializers.ModelSerializer):
     class Meta:
         model = Task
         fields = '__all__'
 
 
+# Hosein
 class AssignmentSerializer(serializers.ModelSerializer):
     assigned_by = serializers.StringRelatedField()
     assigned_to = serializers.StringRelatedField()
@@ -87,7 +91,7 @@ class AssignmentSerializer(serializers.ModelSerializer):
             "task",
         ]
 
-
+# Reza
 class LabelSerializer(serializers.ModelSerializer):
 
     class Meta:
@@ -97,7 +101,7 @@ class LabelSerializer(serializers.ModelSerializer):
             'name',
         ]
 
-
+# Reza
 class LabeledTaskSerializer(serializers.ModelSerializer):
 
     label = LabelSerializer()
@@ -110,7 +114,7 @@ class LabeledTaskSerializer(serializers.ModelSerializer):
             'task',
         ]
 
-
+# Reza
 class CommentSerializer(serializers.ModelSerializer):
 
     label = LabelSerializer()
