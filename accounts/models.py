@@ -7,6 +7,12 @@ from core.models import BaseModel
 
 # Reza
 class User(BaseModel, AbstractUser):
+    
+    GENDER_CHOICES = {
+        ('m', 'Male'),
+        ('f', 'Female'),
+    } 
+    
     email = models.EmailField(
         verbose_name=_("email address"),
         help_text=_("Required."),
@@ -24,11 +30,6 @@ class User(BaseModel, AbstractUser):
         help_text=_("Required."),
         max_length=150,
         )
-
-    GENDER_CHOICES = {
-        ('m', 'Male'),
-        ('f', 'Female'),
-    }
 
     gender = models.CharField(
         verbose_name=_("Gender"),

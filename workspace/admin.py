@@ -17,7 +17,7 @@ from .models import (Workspace,
 #Mahdieh
 @admin.register(Workspace)
 class WorkspaceAdmin(BaseAdmin):
-    list_display = ['name', 'description', 'member', 'access_level', 'created_at',]
+    list_display = ['id','name', 'description', 'member', 'access_level', 'created_at',]
     list_filter = [ 'created_at','access_level', 'updated_at']
     date_hierarchy = 'created_at'
     ordering = ('-created_at', 'access_level')
@@ -45,10 +45,7 @@ class ProjectMemberInline(admin.TabularInline):
 # Mahdieh
 @admin.register(Project)
 class ProjectAdmin(BaseAdmin):
-    list_display = ['name', 'description', 'workspace']
-    #prepopulated_fields = {
-    #    'slug': ['name']
-    #}
+    list_display = ['id', 'name', 'description', 'workspace']
     readonly_fields = ('created_at', 'deadline') 
     inlines = [ProjectMemberInline]
     #list_editable = ['name', 'description']

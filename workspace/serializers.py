@@ -25,7 +25,6 @@ class WorkspaceSerializer(serializers.ModelSerializer):
             'name',
             'description',
             'member',
-            'workspace',
             'access_level',
             'created_at',
         ]
