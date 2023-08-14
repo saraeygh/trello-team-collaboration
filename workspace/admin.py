@@ -5,7 +5,6 @@ from django.utils.translation import gettext_lazy as _
 from core.admin import BaseAdmin
 from .models import (Workspace,
                      Project,
-                     WorkspaceMember,
                      ProjectMember,
                      Task,
                      Assignment,
@@ -14,20 +13,15 @@ from .models import (Workspace,
                      Comment
                      )
 
-# Mahdieh
-class WorkspaceMemberInline(admin.TabularInline):
-    model = WorkspaceMember
-
 
 #Mahdieh
 @admin.register(Workspace)
 class WorkspaceAdmin(BaseAdmin):
-    list_display = ['name', 'description']
-    list_filter = ['name', 'created_at', 'updated_at']
-    inlines = [WorkspaceMemberInline]
+    list_display = ['name', 'description', 'member', 'access_level', 'created_at',]
+    list_filter = [ 'created_at','access_level', 'updated_at']
     date_hierarchy = 'created_at'
-    ordering = ('-created_at',)
-    search_fields = ('name',)
+    ordering = ('-created_at', 'access_level')
+    search_fields = ('name','access_level',)
     readonly_fields = ('created_at',)
 
     fieldsets = (
@@ -35,14 +29,18 @@ class WorkspaceAdmin(BaseAdmin):
             'fields': (
                 'name',
                 'description',
+                'member',
+                'access_level',
                 'created_at'
                 )
         }),
     )
+    
 
 # Mahdieh
 class ProjectMemberInline(admin.TabularInline):
     model = ProjectMember
+
 
 # Mahdieh
 @admin.register(Project)
