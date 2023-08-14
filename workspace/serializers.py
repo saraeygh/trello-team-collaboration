@@ -1,9 +1,7 @@
 from rest_framework import serializers
 from accounts.serializers import (
-    UserDetailSerializer,
     UserSummaryDetailSerializer,
 )
-from accounts.serializers import UserSummaryDetailSerializer
 from .models import (
     Comment,
     Label,
@@ -12,35 +10,27 @@ from .models import (
     Project,
     Task,
     Assignment,
-    WorkspaceMember,
     )
+
 
 # Mahdieh
 class WorkspaceSerializer(serializers.ModelSerializer):
+
+    member = UserSummaryDetailSerializer()
+
     class Meta:
         model = Workspace
         fields = [
             'id',
             'name',
             'description',
-        ]
-
-# Mahdieh
-class WorkspaceMemberSerializer(serializers.ModelSerializer):
-
-    workspace = WorkspaceSerializer()
-    member = UserSummaryDetailSerializer()
-
-    class Meta:
-        model = WorkspaceMember
-        fields = [
-            'id',
             'member',
             'workspace',
             'access_level',
+            'created_at',
         ]
 
-
+    
 # Mahdieh
 class ProjectSerializer(serializers.ModelSerializer):
 
@@ -53,21 +43,28 @@ class ProjectSerializer(serializers.ModelSerializer):
             'name',
             'description',
             'workspace',
+            'created_at',
         ]
 
+    def create(self, validated_data):
+        project = Project.objects.create(**validated_data)
+        return project
 
 # Mahdieh
 class ProjectMemberSerializer(serializers.ModelSerializer):
 
     project = ProjectSerializer()
     member = UserSummaryDetailSerializer()
+    description = serializers.CharField(max_length=500)
 
     class Meta:
-        model = WorkspaceMember
+        model = Workspace
         fields = [
             'id',
             'project',
+            'description'
             'member',
+            'description',
         ]
 
 
@@ -127,4 +124,5 @@ class CommentSerializer(serializers.ModelSerializer):
             'user',
             'task',
             'text',
+            'created_at'
         ]
