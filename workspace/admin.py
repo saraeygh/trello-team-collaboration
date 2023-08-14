@@ -5,7 +5,6 @@ from django.utils.translation import gettext_lazy as _
 from core.admin import BaseAdmin
 from .models import (Workspace,
                      Project,
-                     WorkspaceMember,
                      ProjectMember,
                      Task,
                      Assignment,
@@ -14,20 +13,15 @@ from .models import (Workspace,
                      Comment
                      )
 
-# Mahdieh
-class WorkspaceMemberInline(admin.TabularInline):
-    model = WorkspaceMember
-
 
 #Mahdieh
 @admin.register(Workspace)
 class WorkspaceAdmin(BaseAdmin):
-    list_display = ['name', 'description']
-    list_filter = ['name', 'created_at', 'updated_at']
-    inlines = [WorkspaceMemberInline]
+    list_display = ['id','name', 'description', 'member', 'access_level', 'created_at',]
+    list_filter = [ 'created_at','access_level', 'updated_at']
     date_hierarchy = 'created_at'
-    ordering = ('-created_at',)
-    search_fields = ('name',)
+    ordering = ('-created_at', 'access_level')
+    search_fields = ('name','access_level',)
     readonly_fields = ('created_at',)
 
     fieldsets = (
@@ -35,22 +29,23 @@ class WorkspaceAdmin(BaseAdmin):
             'fields': (
                 'name',
                 'description',
+                'member',
+                'access_level',
                 'created_at'
                 )
         }),
     )
+    
 
 # Mahdieh
 class ProjectMemberInline(admin.TabularInline):
     model = ProjectMember
 
+
 # Mahdieh
 @admin.register(Project)
 class ProjectAdmin(BaseAdmin):
-    list_display = ['name', 'description', 'workspace']
-    #prepopulated_fields = {
-    #    'slug': ['name']
-    #}
+    list_display = ['id', 'name', 'description', 'workspace']
     readonly_fields = ('created_at', 'deadline') 
     inlines = [ProjectMemberInline]
     #list_editable = ['name', 'description']
