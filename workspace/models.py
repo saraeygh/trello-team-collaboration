@@ -11,8 +11,7 @@ class Workspace(TimeMixin):
     class Access(models.IntegerChoices):
         MEMBER = 1  # Can view and move only own items
         ADMIN = 2  # Can  add and remove members and modify project settings.
-    id = models.IntegerField(primary_key=True)
-    
+
     name = models.CharField(
         max_length=255,
         verbose_name=_("Workspace name"),
