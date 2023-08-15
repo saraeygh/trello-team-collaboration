@@ -1,35 +1,17 @@
 from django.db import models
-from django.contrib.auth.models import AbstractUser
 from django.utils.translation import gettext_lazy as _
 
-from core.models import BaseModel
+from core.models import BaseModel, TimeMixin
+from . import User
 
 
 # Reza
-class User(BaseModel, AbstractUser):
-    
+class Profile(TimeMixin, BaseModel):
+
     GENDER_CHOICES = {
         ('m', 'Male'),
         ('f', 'Female'),
-    } 
-    
-    email = models.EmailField(
-        verbose_name=_("email address"),
-        help_text=_("Required."),
-        unique=True,
-        )
-
-    first_name = models.CharField(
-        verbose_name=_("first name"),
-        help_text=_("Required."),
-        max_length=150,
-        )
-
-    last_name = models.CharField(
-        verbose_name=_("last name"),
-        help_text=_("Required."),
-        max_length=150,
-        )
+    }
 
     gender = models.CharField(
         verbose_name=_("Gender"),
@@ -53,4 +35,10 @@ class User(BaseModel, AbstractUser):
         max_length=11,
         blank=True,
         null=True,
+        )
+
+    user = models.OneToOneField(
+        User,
+        on_delete=models.CASCADE,
+        related_name='profile'
         )
