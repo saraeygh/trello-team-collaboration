@@ -8,7 +8,9 @@ class CommentViewSet(ModelViewSet):
     serializer_class = CommentSerializer
 
     def get_queryset(self):
-        return Comment.objects.filter(task_id=self.kwargs['task_pk'])
+        task_id = self.kwargs.get('task_pk')
+        return Comment.objects.filter(task_id=task_id)
 
     def get_serializer_context(self):
-        return {'task_id': self.kwargs['task_pk']}
+        task_id = self.kwargs.get('task_pk')
+        return {'task_id': task_id}

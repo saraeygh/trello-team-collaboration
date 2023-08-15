@@ -34,6 +34,20 @@ INTERNAL_IPS = [
 
 # Application definition
 
+LOCAL_APPS = [
+    'core.apps.CoreConfig',
+    'accounts.apps.AccountsConfig',
+    'workspace.apps.WorkspaceConfig',
+]
+
+THIRD_PARTY_APPS = [
+    'rest_framework',
+    'djoser',
+    'django_filters',
+    'drf_yasg',
+    'debug_toolbar',
+]
+
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -41,16 +55,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    # added app
-    'core.apps.CoreConfig',
-    'accounts.apps.AccountsConfig',
-    'workspace.apps.WorkspaceConfig',
-    'rest_framework',
-    'djoser',
-    'django_filters',
-    # For development
-    'debug_toolbar',
-    'drf_yasg',
+    *THIRD_PARTY_APPS,
+    *LOCAL_APPS,
 ]
 
 MIDDLEWARE = [

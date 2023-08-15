@@ -33,18 +33,6 @@ class ProjectViewSet(ModelViewSet):
             }
 
 
-class ProjectMemeberViewSet(ModelViewSet):
-    serializer_class = ProjectMemberSerializer
-
-    def get_queryset(self):
-        return ProjectMember.objects.filter(project_id=self.kwargs['project_pk'])
-
-    def get_serializer_context(self):
-        return {
-            'project_id': self.kwargs['project_pk'],
-        }
-
-
 # Mahdieh
 # class ProjectViewSet(ModelViewSet):
 #     serializer_class = ProjectSerializer
@@ -74,39 +62,3 @@ class ProjectMemeberViewSet(ModelViewSet):
 #         if self.request.method in ['PATCH', 'DELETE']:
 #             return [IsProjectAdminOrMemberReadOnly()]
 #         return [IsProjectMember()]
-
-
-# Mahdieh
-# class ProjectMemberList(mixins.ListModelMixin,
-#                         generics.GenericAPIView,
-#                         mixins.CreateModelMixin):
-#     serializer_class = WorkspaceSerializer
-#     permission_classes = [IsProjectAdminOrMemberReadOnly]
-
-#     def get(self, request, *args, **kwargs):
-#         return self.list(request, *args, **kwargs)
-
-#     def get_queryset(self):
-#         user = self.request.user
-#         try:
-#             if user.is_staff:
-#                 return Project.objects.all()
-
-#             else:
-#                 project = Project.objects.get(pk=self.kwargs['pk'])
-#                 query_set = WorkspaceSerializer.objects.filter(project=project)
-#                 return query_set
-#         except:
-#             return Response(status=status.HTTP_404_NOT_FOUND)
-
-# Mahdieh
-# class ProjectMemeberViewSet(ModelViewSet):
-#     serializer_class = ProjectMemberSerializer
-
-#     def get_queryset(self):
-#         return ProjectMember.objects.filter(project_id=self.kwargs['project_pk'])
-
-#     def get_serializer_context(self):
-#         return {
-#             'project_id': self.kwargs['project_pk'],
-#         }

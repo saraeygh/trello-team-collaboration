@@ -46,20 +46,3 @@ class Project(TimeMixin, BaseModel):
 
     def __str__(self):
         return self.name
-
-
-# Mahdieh
-class ProjectMember(TimeMixin, BaseModel):
-
-    project = models.ForeignKey(
-        Project,
-        verbose_name=_('Project'),
-        related_name='project',
-        on_delete=models.CASCADE,
-        )
-
-    member = models.ForeignKey(
-        User,
-        on_delete=models.CASCADE,
-        help_text=_("Users who are members of this workspace."),
-        )

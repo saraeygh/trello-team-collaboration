@@ -6,7 +6,7 @@ from core.admin import BaseAdmin
 from accounts.models import User, Profile
 
 
-class ProfileInLine(admin.TabularInline):
+class ProfileInLine(admin.StackedInline):
     model = Profile
     exclude = ('soft_delete',)
 

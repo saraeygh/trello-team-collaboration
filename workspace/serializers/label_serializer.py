@@ -1,27 +1,18 @@
 from rest_framework import serializers
-from workspace.models import Label, LabeledTask
+
+from workspace.models import Label
+from workspace.serializers import TaskSerializer
 
 
 # Reza
 class LabelSerializer(serializers.ModelSerializer):
+
+    task = TaskSerializer(many=True)
 
     class Meta:
         model = Label
         fields = [
             'id',
             'name',
-        ]
-
-
-# Reza
-class LabeledTaskSerializer(serializers.ModelSerializer):
-
-    label = LabelSerializer()
-
-    class Meta:
-        model = LabeledTask
-        fields = [
-            'id',
-            'label',
             'task',
         ]

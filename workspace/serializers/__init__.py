@@ -1,5 +1,8 @@
 from .workspace_serializer import WorkspaceSerializer
-from .project_serializer import ProjectSerializer, ProjectMemberSerializer
-from .task_serializer import TaskSerializer, AssignmentSerializer
-from .label_serializer import LabelSerializer, LabeledTaskSerializer
+from .project_serializer import ProjectSerializer
+from .project_member_serializer import ProjectMemberSerializer
+from .task_serializer import TaskSerializer
+from .assignment_serializer import AssignmentSerializer
+from .label_serializer import LabelSerializer
+from .labeled_task_serializer import LabeledTaskSerializer
 from .comment_serializer import CommentSerializer
