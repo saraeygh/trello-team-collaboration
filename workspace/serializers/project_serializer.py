@@ -1,8 +1,8 @@
 from rest_framework import serializers
 from accounts.serializers import UserSummaryDetailSerializer
 from workspace.models import Project
-from workspace.models.workspace_model import Workspace
-from workspace.serializers.workspace_serializer import WorkspaceSerializer
+from workspace.models import ProjectMember
+from workspace.serializers import WorkspaceSerializer
 
 
 # Mahdieh
@@ -30,14 +30,11 @@ class ProjectMemberSerializer(serializers.ModelSerializer):
 
     project = ProjectSerializer()
     member = UserSummaryDetailSerializer()
-    description = serializers.CharField(max_length=500)
 
     class Meta:
-        model = Workspace
+        model = ProjectMember
         fields = [
             'id',
             'project',
-            'description'
             'member',
-            'description',
         ]

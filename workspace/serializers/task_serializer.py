@@ -18,6 +18,7 @@ class AssignmentSerializer(serializers.ModelSerializer):
     class Meta:
         model = Assignment
         fields = [
+            "assigned_by",
             "assigned_to",
             "task",
         ]

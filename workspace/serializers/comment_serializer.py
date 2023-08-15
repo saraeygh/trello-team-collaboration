@@ -7,7 +7,6 @@ from workspace.serializers import LabelSerializer
 # Reza
 class CommentSerializer(serializers.ModelSerializer):
 
-    label = LabelSerializer()
     user = UserSummaryDetailSerializer()
 
     class Meta:

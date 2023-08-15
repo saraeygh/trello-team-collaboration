@@ -1,6 +1,6 @@
 from .workspace_view import WorkspaceViewSet
 from .project_view import (ProjectViewSet,
-                           ProjectMemberList,
+                        #    ProjectMemberList,
                            ProjectMemeberViewSet
                            )
 from .task_view import TaskViewSet
