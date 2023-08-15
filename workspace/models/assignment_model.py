@@ -17,15 +17,15 @@ class Assignment(TimeMixin, models.Model):
 
     assigned_by = models.ForeignKey(
         User,
-        related_name='assignments_given',
         verbose_name=_("Assigned By"),
+        related_name="assigned_by",
         on_delete=models.CASCADE,
         help_text="Select the user who is assigning the task."
     )
 
     assigned_to = models.ForeignKey(
         User,
-        related_name='assignments_received',
+        related_name="assigned_to",
         verbose_name=_("Assigned To"),
         on_delete=models.CASCADE,
         help_text="Select the user to whom the task is being assigned."

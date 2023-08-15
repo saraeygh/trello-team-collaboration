@@ -77,22 +77,22 @@ class Task(TimeMixin, BaseModel):
             Choose from 'Low', 'Medium', or 'High'."
         )
 
-    assigned_to = models.ManyToManyField(
-        User,
-        through='Assignment',
-        through_fields=("task", "assigned_to"),
-        related_name='assignments_given',
-        verbose_name=_("Assigned To"),
-        help_text="Select the users to whom the task is being assigned."
-    )
-
     assigned_by = models.ManyToManyField(
         User,
-        through='Assignment',
+        through='workspace.Assignment',
         through_fields=("task", "assigned_by"),
-        related_name='assignments_given',
+        related_name="assignment_given",
         verbose_name=_("Assigned By"),
         help_text="Select the users who are assigning the task."
+    )
+
+    assigned_to = models.ManyToManyField(
+        User,
+        through='workspace.Assignment',
+        through_fields=("task", "assigned_to"),
+        related_name="assignment_received",
+        verbose_name=_("Assigned To"),
+        help_text="Select the users to whom the task is being assigned."
     )
 
     def __str__(self):
