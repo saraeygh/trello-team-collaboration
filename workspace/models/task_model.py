@@ -2,8 +2,9 @@ from django.db import models
 from django.utils.translation import gettext_lazy as _
 from core.models import BaseModel, TimeMixin
 from django.utils import timezone
-
-from workspace.models import Project, Comment
+from accounts.models import User
+from workspace.models import Project
+from .comment_model import Comment
 
 
 # Hossein
@@ -75,6 +76,24 @@ class Task(TimeMixin, BaseModel):
         help_text="The priority level of the task.\
             Choose from 'Low', 'Medium', or 'High'."
         )
+
+    assigned_to = models.ManyToManyField(
+        User,
+        through='Assignment',
+        through_fields=("task", "assigned_to"),
+        related_name='assignments_given',
+        verbose_name=_("Assigned To"),
+        help_text="Select the users to whom the task is being assigned."
+    )
+
+    assigned_by = models.ManyToManyField(
+        User,
+        through='Assignment',
+        through_fields=("task", "assigned_by"),
+        related_name='assignments_given',
+        verbose_name=_("Assigned By"),
+        help_text="Select the users who are assigning the task."
+    )
 
     def __str__(self):
         return self.title
