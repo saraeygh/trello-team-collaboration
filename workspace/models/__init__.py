@@ -6,3 +6,4 @@ from .task_model import Task
 from .assignment_model import Assignment
 from .label_model import Label
 from .labeled_task_model import LabeledTask
+from .workspace_member_model import WorkspaceMember

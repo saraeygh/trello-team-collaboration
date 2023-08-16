@@ -1,5 +1,6 @@
 from django.db import models
 from django.utils.translation import gettext_lazy as _
+
 from core.models import TimeMixin
 from accounts.models import User
 
@@ -23,10 +24,10 @@ class Workspace(TimeMixin):
         help_text=_('Enter a description for the workspace')
         )
 
-    member = models.ForeignKey(
+    member = models.ManyToManyField(
         User,
-        on_delete=models.CASCADE,
-        help_text=_("Users who are members of this workspace."),
+        through='WorkspaceMember', 
+        through_fields=('workspace', 'member')
         )
 
     access_level = models.IntegerField(
@@ -35,4 +36,8 @@ class Workspace(TimeMixin):
         )
 
     def __str__(self):
-        return f'{self.member.first_name}, {self.member.last_name} , {self.project.name}'
+        return self.name
+
+    class Meta:
+        verbose_name = _("Workspace")
+        verbose_name_plural = _("Workspaces")

@@ -6,3 +6,4 @@ from .assignment_serializer import AssignmentSerializer
 from .label_serializer import LabelSerializer
 from .labeled_task_serializer import LabeledTaskSerializer
 from .comment_serializer import CommentSerializer
+from .workspace_member_serializer import WorkspaceMemberSerializer

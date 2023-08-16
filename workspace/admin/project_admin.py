@@ -16,7 +16,7 @@ class ProjectAdmin(BaseAdmin):
     list_display = ['id', 'name', 'description', 'workspace']
     readonly_fields = ('created_at', 'deadline') 
     inlines = [ProjectMemberInline]
-    list_filter = ['name', 'created_at', 'updated_at']
+    list_filter = ['created_at', 'updated_at']
     search_fields = ['name']
     fieldsets = (
         (_("Project Information"), {
