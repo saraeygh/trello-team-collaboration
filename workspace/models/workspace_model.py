@@ -1,11 +1,11 @@
 from django.db import models
 from django.utils.translation import gettext_lazy as _
-from core.models import TimeMixin
+from core.models import TimeMixin, BaseModel
 from accounts.models import User
 
 
 # Mahdieh
-class Workspace(TimeMixin):
+class Workspace(TimeMixin, BaseModel):
 
     class Access(models.IntegerChoices):
         MEMBER = 1  # Can view and move only own items
