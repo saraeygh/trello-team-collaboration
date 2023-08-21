@@ -3,6 +3,7 @@ from django.utils.translation import gettext_lazy as _
 from core.models import BaseModel, TimeMixin
 from workspace.models import Workspace
 from accounts.models import User
+from django.utils import timezone
 
 
 # Mahdieh
@@ -35,14 +36,21 @@ class Project(TimeMixin, BaseModel):
 
     member = models.ManyToManyField(
         User,
-        through='ProjectMember', 
+        through='ProjectMember',
         through_fields=('project', 'member')
         )
 
-    #slug = models.SlugField(
-    #    max_length=50,
-    #    unique=True
-    #    )
-
     def __str__(self):
         return self.name
+
+    def get_active_tasks(self):
+        return self.task_set.filter(status__in=["todo", "doing"])
+
+    def get_completed_tasks(self):
+        return self.task_set.filter(status="done")
+
+    def get_overdue_tasks(self):
+        return self.task_set.filter(
+            due_date__lt=timezone.now(),
+            status__in=["todo", "doing"]
+            )

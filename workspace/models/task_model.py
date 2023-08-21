@@ -5,6 +5,7 @@ from django.utils import timezone
 from accounts.models import User
 from workspace.models import Project
 from .comment_model import Comment
+from django.db.models import Q
 
 
 # Hossein
@@ -108,3 +109,11 @@ class Task(TimeMixin, BaseModel):
 
     def task_comments(self):
         return Comment.objects.filter(task=self)
+
+    def add_comment(self, user, comment_text):
+        return Comment.objects.create(user=user, task=self, text=comment_text)
+
+    def get_assigned_users(self):
+        return User.objects.filter(
+            Q(assignment_given__task=self) | Q(assignment_received__task=self)
+        ).distinct()

@@ -1,11 +1,11 @@
 from django.db import models
 from django.utils.translation import gettext_lazy as _
-from core.models import TimeMixin
+from core.models import TimeMixin, BaseModel
 from accounts.models import User
 
 
 # Mahdieh
-class Workspace(TimeMixin):
+class Workspace(TimeMixin, BaseModel):
 
     class Access(models.IntegerChoices):
         MEMBER = 1  # Can view and move only own items
@@ -33,6 +33,24 @@ class Workspace(TimeMixin):
         choices=Access.choices,
         default=1
         )
+    
+    # def is_admin(self, user):
+    #     return self.member == user and self.access_level == Workspace.Access.ADMIN
+
+    # def is_member(self, user):
+    #     return self.member == user and self.access_level == Workspace.Access.MEMBER
+
+    # def has_member(self, user):
+    #     return self.member == user
+
+    # def get_projects(self):
+    #     return self.project.all()
+
+    # def get_admin_projects(self):
+    #     return self.project.filter(access_level=Project.Access.ADMIN)
+
+    # def get_member_projects(self):
+        # return self.project.filter(access_level=Project.Access.MEMBER)
 
     def __str__(self):
         return f'{self.member.first_name}, {self.member.last_name} , {self.project.name}'
