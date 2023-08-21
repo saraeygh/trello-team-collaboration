@@ -1,15 +1,11 @@
 from django.db import models
 from django.utils.translation import gettext_lazy as _
-from core.models import TimeMixin
+from core.models import TimeMixin, BaseModel
 from accounts.models import User
 
 
 # Mahdieh
-class Workspace(TimeMixin):
-
-    class Access(models.IntegerChoices):
-        MEMBER = 1  # Can view and move only own items
-        ADMIN = 2  # Can  add and remove members and modify project settings.
+class Workspace(TimeMixin, BaseModel):
 
     name = models.CharField(
         max_length=255,
@@ -23,16 +19,14 @@ class Workspace(TimeMixin):
         help_text=_('Enter a description for the workspace')
         )
 
-    member = models.ForeignKey(
+    member = models.ManyToManyField(
         User,
-        on_delete=models.CASCADE,
-        help_text=_("Users who are members of this workspace."),
-        )
-
-    access_level = models.IntegerField(
-        choices=Access.choices,
-        default=1
+        through='WorkspaceMember', 
         )
 
     def __str__(self):
-        return f'{self.member.first_name}, {self.member.last_name} , {self.project.name}'
+        return f'{self.name}'
+
+    class Meta:
+        verbose_name = _("Workspace")
+        verbose_name_plural = _("Workspaces")

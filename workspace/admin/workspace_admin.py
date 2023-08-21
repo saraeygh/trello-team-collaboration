@@ -2,7 +2,12 @@ from django.contrib import admin
 from django.utils.translation import gettext_lazy as _
 
 from core.admin import BaseAdmin
-from workspace.models import Workspace
+from workspace.models import Workspace, WorkspaceMember
+
+
+# Mahdieh
+class WorkspaceMemberInline(admin.TabularInline):
+    model = WorkspaceMember
 
 
 #Mahdieh
@@ -12,14 +17,13 @@ class WorkspaceAdmin(BaseAdmin):
         'id',
         'name',
         'description',
-        'member',
-        'access_level',
         'created_at',
         ]
-    list_filter = ['created_at', 'access_level', 'updated_at']
+    list_filter = ['created_at', 'updated_at']
+    inlines = [WorkspaceMemberInline]
     date_hierarchy = 'created_at'
-    ordering = ('-created_at', 'access_level')
-    search_fields = ('name', 'access_level',)
+    ordering = ('-created_at',)
+    search_fields = ('name',)
     readonly_fields = ('created_at',)
 
     fieldsets = (
@@ -27,8 +31,6 @@ class WorkspaceAdmin(BaseAdmin):
             'fields': (
                 'name',
                 'description',
-                'member',
-                'access_level',
                 'created_at'
                 )
         }),

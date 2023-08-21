@@ -7,6 +7,7 @@ from accounts.models import User
 
 # Mahdieh
 class Project(TimeMixin, BaseModel):
+    
     name = models.CharField(
         max_length=200,
         verbose_name=_("Project name"),
@@ -46,3 +47,7 @@ class Project(TimeMixin, BaseModel):
 
     def __str__(self):
         return self.name
+
+    class Meta:
+        verbose_name = _("Project")
+        verbose_name_plural = _("Projects")

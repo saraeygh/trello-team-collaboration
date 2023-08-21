@@ -7,7 +7,7 @@ from workspace.models import Workspace
 # Mahdieh
 class WorkspaceSerializer(serializers.ModelSerializer):
 
-    member = UserSummaryDetailSerializer()
+    member = UserSummaryDetailSerializer(many=True)
 
     class Meta:
         model = Workspace
@@ -16,6 +16,5 @@ class WorkspaceSerializer(serializers.ModelSerializer):
             'name',
             'description',
             'member',
-            'access_level',
             'created_at',
         ]
