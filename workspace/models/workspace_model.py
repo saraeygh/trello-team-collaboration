@@ -7,6 +7,10 @@ from accounts.models import User
 # Mahdieh
 class Workspace(TimeMixin, BaseModel):
 
+    class Access(models.IntegerChoices):
+        MEMBER = 1  # Can view and move only own items
+        ADMIN = 2  # Can  add and remove members and modify project settings.
+
     name = models.CharField(
         max_length=255,
         verbose_name=_("Workspace name"),
@@ -23,6 +27,24 @@ class Workspace(TimeMixin, BaseModel):
         User,
         through='WorkspaceMember', 
         )
+    
+    # def is_admin(self, user):
+    #     return self.member == user and self.access_level == Workspace.Access.ADMIN
+
+    # def is_member(self, user):
+    #     return self.member == user and self.access_level == Workspace.Access.MEMBER
+
+    # def has_member(self, user):
+    #     return self.member == user
+
+    # def get_projects(self):
+    #     return self.project.all()
+
+    # def get_admin_projects(self):
+    #     return self.project.filter(access_level=Project.Access.ADMIN)
+
+    # def get_member_projects(self):
+        # return self.project.filter(access_level=Project.Access.MEMBER)
 
     def __str__(self):
         return f'{self.name}'
