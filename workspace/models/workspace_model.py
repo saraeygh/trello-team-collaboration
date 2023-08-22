@@ -6,7 +6,6 @@ from accounts.models import User
 
 # Mahdieh
 class Workspace(TimeMixin, BaseModel):
-
     name = models.CharField(
         max_length=255,
         verbose_name=_("Workspace name"),

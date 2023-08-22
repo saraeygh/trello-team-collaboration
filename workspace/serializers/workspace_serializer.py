@@ -8,7 +8,6 @@ from workspace.models import Workspace
 class WorkspaceSerializer(serializers.ModelSerializer):
 
     member = UserSummaryDetailSerializer(many=True)
-
     class Meta:
         model = Workspace
         fields = [

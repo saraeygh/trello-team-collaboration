@@ -9,7 +9,6 @@ from workspace.models import Workspace, WorkspaceMember
 class WorkspaceMemberInline(admin.TabularInline):
     model = WorkspaceMember
 
-
 #Mahdieh
 @admin.register(Workspace)
 class WorkspaceAdmin(BaseAdmin):
