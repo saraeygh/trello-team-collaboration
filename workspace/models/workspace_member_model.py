@@ -5,6 +5,7 @@ from core.models import TimeMixin, BaseModel
 from workspace.models import Workspace
 from accounts.models import User
 
+
 # Mahdieh
 class WorkspaceMember(TimeMixin, BaseModel):
 
