@@ -31,5 +31,11 @@ class Assignment(TimeMixin, models.Model):
         help_text="Select the user to whom the task is being assigned."
     )
 
+    def is_assigned_by_user(self, user):
+        return self.assigned_by == user
+
+    def is_assigned_to_user(self, user):
+        return self.assigned_to == user
+
     def __str__(self):
         return f"{self.assigned_to.username} assigned to {self.task.title}"

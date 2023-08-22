@@ -6,6 +6,7 @@ from workspace.serializers import TaskSerializer
 
 # Reza
 class LabelSerializer(serializers.ModelSerializer):
+    # from workspace.serializers import TaskSerializer
 
     task = TaskSerializer(many=True)
 

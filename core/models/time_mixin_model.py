@@ -4,6 +4,7 @@ from django.db import models
 
 # RezaS
 class TimeMixin(models.Model):
+
     created_at = models.DateTimeField(
         verbose_name=_("Created at"),
         auto_now_add=True

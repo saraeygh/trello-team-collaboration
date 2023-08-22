@@ -5,3 +5,7 @@ djoser==2.2.0
 djangorestframework_simplejwt==5.2.2
 django-filter==23.2
 markdown==3.4.4
+python-decouple==3.8
+psycopg2-binary==2.9.7
+psycopg2==2.9.7
+django-jazzmin==2.6.0
