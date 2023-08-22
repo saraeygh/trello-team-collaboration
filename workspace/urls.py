@@ -1,45 +1,58 @@
 from rest_framework_nested import routers
-from . import views
+from .views import (WorkspaceViewSet,
+                    LabelViewSet,
+                    LabledTaskViewSet,
+                    ProjectViewSet,
+                    ProjectMemeberViewSet,
+                    TaskViewSet,
+                    AssignmentViewSet,
+                    CommentViewSet,
+                    )
 
 router = routers.DefaultRouter()
-router.register('workspaces', views.WorkspaceViewSet, basename='workspaces')
-router.register('labels', views.LabelViewSet, basename='labels')
-router.register('project', views.ProjectViewSet, basename='project')
-
+router.register('workspaces', WorkspaceViewSet, basename='workspaces')
+router.register('projects', ProjectViewSet, basename='projects')
+router.register('tasks', TaskViewSet, basename='tasks')
+router.register('labels', LabelViewSet, basename='labels')
 
 workspaces_router = routers.NestedDefaultRouter(
      router, 'workspaces', lookup='workspace'
      )
 workspaces_router.register(
-     'projects', views.ProjectViewSet, basename='workspace-projects'
+     'projects', ProjectViewSet, basename='workspace-projects'
      )
-#workspaces_router.register(
-#     'workspacemembers', views.WorkspaceMemberViewSet, basename='workspace-members'
-#     )
 
 projects_router = routers.NestedDefaultRouter(
-     workspaces_router, 'projects', lookup='project'
+    router, 'projects', lookup='project'
+    )
+projects_router.register(
+     'members', ProjectMemeberViewSet, basename='project-memebrs'
      )
 projects_router.register(
-     'members', views.ProjectMemeberViewSet, basename='project-memebrs'
-     )
-projects_router.register(
-     'tasks', views.TaskViewSet, basename='project-tasks'
+     'tasks', TaskViewSet, basename='project-tasks'
      )
 
 tasks_router = routers.NestedDefaultRouter(
-    projects_router, 'tasks', lookup='task'
+    router, 'tasks', lookup='task'
     )
 tasks_router.register(
-    'assignments', views.AssignmentViewSet, basename='tasks-assignments'
+    'assignments', AssignmentViewSet, basename='tasks-assignments'
     )
 tasks_router.register(
-    'comments', views.CommentViewSet, basename='tasks-comments'
+    'comments', CommentViewSet, basename='tasks-comments'
+    )
+
+labels_router = routers.NestedDefaultRouter(
+    router, 'labels', lookup='label'
+    )
+labels_router.register(
+    'labeled-task', LabledTaskViewSet, basename='label-tasks'
     )
 
 urlpatterns = (
     router.urls
-     + workspaces_router.urls
-     + projects_router.urls
-     + tasks_router.urls
+    + workspaces_router.urls
+    + projects_router.urls
+    + tasks_router.urls
+    + labels_router.urls
     )

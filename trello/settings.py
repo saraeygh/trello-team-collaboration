@@ -9,9 +9,11 @@ https://docs.djangoproject.com/en/4.2/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.2/ref/settings/
 """
-from datetime import timedelta
+from decouple import config
 import os
 from pathlib import Path
+from datetime import timedelta
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -21,36 +23,43 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-=(8*a1#nry)h4o=d!i#ch3$vi%e@k=2564x3a^ad!2e_j45l6n'
+SECRET_KEY = config('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = config('DEBUG', default=True)
 
 ALLOWED_HOSTS = []
 
 INTERNAL_IPS = [
-    "127.0.0.1",
+    '127.0.0.1',
 ]
 
 # Application definition
 
+LOCAL_APPS = [
+    'core.apps.CoreConfig',
+    'accounts.apps.AccountsConfig',
+    'workspace.apps.WorkspaceConfig',
+]
+
+THIRD_PARTY_APPS = [
+    'rest_framework',
+    'djoser',
+    'django_filters',
+    'drf_yasg',
+    'debug_toolbar',
+]
+
 INSTALLED_APPS = [
+    'jazzmin',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    # added app
-    'core.apps.CoreConfig',
-    'accounts.apps.AccountsConfig',
-    'workspace.apps.WorkspaceConfig',
-    'rest_framework',
-    'djoser',
-    'django_filters',
-    # For development
-    'debug_toolbar',
-    'drf_yasg',
+    *THIRD_PARTY_APPS,
+    *LOCAL_APPS,
 ]
 
 MIDDLEWARE = [
@@ -89,10 +98,23 @@ WSGI_APPLICATION = 'trello.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
+# sudo su — postgres
+# psql
+
+# CREATE USER <username>;
+# ALTER ROLE <username> WITH PASSWORD '<password>';
+# CREATE DATABASE <database-name>;
+# GRANT ALL PRIVILEGES ON DATABASE <database-name> TO <username>;
+# ALTER DATABASE <database-name> OWNER TO <username>;
+
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': config('DB_ENGINE'),
+        'NAME': config('DB_NAME'),
+        'USER': config('DB_USER', default=None),
+        'PASSWORD': config('DB_PASSWORD', default=None),
+        'HOST': config('DB_HOST', default=None),
+        'PORT': config('DB_PORT', default=None),
     }
 }
 
@@ -190,6 +212,7 @@ SIMPLE_JWT = {
 
 DJOSER = {
     'SERIALIZERS': {
+        'user': 'accounts.serializers.UserDetailSerializer',
         'user_create': 'accounts.serializers.UserCreateSerializer',
         'current_user': 'accounts.serializers.UserDetailSerializer',
     },
