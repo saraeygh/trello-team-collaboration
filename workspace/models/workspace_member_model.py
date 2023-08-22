@@ -5,10 +5,9 @@ from core.models import TimeMixin, BaseModel
 from workspace.models import Workspace
 from accounts.models import User
 
-
 # Mahdieh
 class WorkspaceMember(TimeMixin, BaseModel):
-  
+
     class Access(models.IntegerChoices):
         MEMBER = 1  # Can view and move only own items
         ADMIN = 2  # Can  add and remove members and modify project settings.

@@ -10,7 +10,6 @@ class WorkspaceMemberSerializer(serializers.ModelSerializer):
 
     workspace = WorkspaceSerializer()
     member = UserSummaryDetailSerializer(many=True)
-
     class Meta:
         model = WorkspaceMember
         fields = [
