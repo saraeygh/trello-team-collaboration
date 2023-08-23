@@ -19,13 +19,12 @@ A Trello-like collaborative project management web app; **Daneshkar** *Python/Dj
 
 ## Introduction
 
-In this app you can easily manage your project tasks with your team. You and all your team members should register their accounts. Then you can create a new team (a.k.a *Workspace*) and add your team members. You can define multiple projects (a.k.a *Board*) for each workspace or team. Then you start to define project tasks and assign tasks to members. Each task has name, description, start date, end date, due date, status (include *To-DO*, *Doing*, *Done* and *suspend*) and a label. You can define as many labels as you want and allocate tasks to these labels.
+In this app you can easily manage your project tasks with your team. You and all your team members should register their accounts. Then you can create a new team (a.k.a *Workspace*) and add your team members. You can define multiple projects (a.k.a *Projects*) for each workspace or team. Then you start to define project tasks and assign tasks to members. Each task has name, description, start date, end date, due date, status (include *To-DO*, *Doing*, *Done* and *suspend*) and a label. You can define as many labels as you want and allocate tasks to these labels.
 
 ## Features
 
-- Boards: Create boards to represent different projects or teams. Each board can have multiple lists.
+- Projects: Create projects to represent different projects or teams. Each projects can have multiple lists.
 - Lists: Organize tasks using lists. Customize list names to fit your workflow (e.g., "To Do," "In Progress," "Done").
-- Drag-and-Drop: Easily move cards between lists with an intuitive drag-and-drop interface.
 - Labels: Categorize task with customizable labels, such as priority levels or task types.
 - Comments and Attachments: Collaborate on cards by adding comments and attaching files.
 - Search and Filter: Quickly find cards using search and filter options.
@@ -40,8 +39,9 @@ The ERD illustrates the entities, relationships, and attributes within the datab
 ## Technologies Used
 
 - Django 4.2.3
+- Django-restframework 3.14.0
 - Python 3.11
-- HTML/CSS
+
 
 ## Installation
 
@@ -59,16 +59,18 @@ To run the Project Management Tool locally, follow these steps:
    python3 -m venv venv
    ```
 
-3. Activate the virtual environment:
+3. Activate the virtual environment if you use Linux:
 
    ```bash
-   source venv/bin/activate
+   - On mscOS and linux: source venv/bin/activate
+   - On Windows: venv/Scripts/activate.bat
    ```
 
 4. Install the dependencies:
 
    ```bash
-   pip install -r requirements.txt
+   pip install -r requirements/base.txt
+   pip install -r requirements/development.txt
    ```
 
 5. Run database migrations:
@@ -89,15 +91,13 @@ To run the Project Management Tool locally, follow these steps:
 
 - Create an account or log in to an existing one.
 
-- Create a new board for your project.
+- Create a new Project for your project.
 
-- Add tasks to your board (e.g., "To Do," "In Progress," "Done").
+- Add tasks to your prpject (e.g., "To Do," "In Progress," "Done").
 
 - Within each list, create cards representing individual tasks.
 
 - Customize cards and task with descriptions, due dates, and assignees.
-
-- Drag and drop cards to move them between lists as they progress.
 
 - Collaborate with team members by adding comments and attachments to cards.
 
@@ -108,16 +108,18 @@ We welcome contributions from the community! To contribute to the project, follo
 1. Fork the repository and create your branch:
 
  ```bash
-    git clone https://github.com/saraeygh/trello-team-collaboration.git
-    cd trello-team-collaboration
-    git checkout -b feature/your-feature-name 
+    - git clone https://github.com/saraeygh/trello-team-collaboration.git
+
+    - cd trello-team-collaboration
+
+    - git checkout -b feature/your-feature-name 
    ```
 
 2. Make your changes and commit them:
 
  ```bash
-    git add .
-    git commit -m "Add your commit message here"
+    - git add .
+    - git commit -m "Add your commit message here"
    ```
 
 3. Push your changes to your forked repository:
