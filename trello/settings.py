@@ -47,6 +47,7 @@ THIRD_PARTY_APPS = [
     'djoser',
     'django_filters',
     'debug_toolbar',
+    'drf_yasg',
     'drf_spectacular',
 ]
 
