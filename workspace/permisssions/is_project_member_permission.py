@@ -1,12 +1,13 @@
 from rest_framework import permissions
-from workspace.models import Workspace
+from workspace.models import ProjectMember
 
 
 # Mahdieh
 class IsProjectMember(permissions.BasePermission):
     def has_object_permission(self, request, view, obj):
-        try:
-            pmem = Workspace.objects.get(member=request.user, project=obj)
-        except Workspace.DoesNotExist:
-            return False
-        return True
+        
+        if ProjectMember.objects.filter(member=request.user.id, project=obj).exists():
+            return True
+        return False
+
+        

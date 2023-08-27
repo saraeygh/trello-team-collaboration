@@ -4,6 +4,7 @@ from core.models import BaseModel, TimeMixin
 from workspace.models import Workspace
 from accounts.models import User
 
+
 # Mahdieh
 class Project(TimeMixin, BaseModel):
     
@@ -29,7 +30,6 @@ class Project(TimeMixin, BaseModel):
         verbose_name=_("Deadline"),
         blank=True,
         null=True,
-        auto_now_add=True,
         help_text="The date and time when the project deadline."
         )
 

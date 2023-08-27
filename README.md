@@ -39,7 +39,7 @@ The ERD illustrates the entities, relationships, and attributes within the datab
 ## Technologies Used
 
 - Django 4.2.3
-- Django-restframework 3.14.0
+- Django-rest framework 3.14.0
 - Python 3.11
 
 
@@ -59,7 +59,7 @@ To run the Project Management Tool locally, follow these steps:
    python3 -m venv venv
    ```
 
-3. Activate the virtual environment if you use Linux:
+3. Activate the virtual environment:
 
    ```bash
    - On mscOS and linux: source venv/bin/activate
@@ -147,7 +147,7 @@ If you have any questions or inquiries, please feel free to contact any of the f
   - Email: <saraeygh@gmail.com>
   - GitHub: [saraeygh](https://github.com/saraeygh)
 
-- **Mahdieh Soleymani.** (Developer)
+- **Mahdieh Soleimani.** (Developer)
   - Email: <Mahdieh.soleimani2000@gmail.com>
   - GitHub: [MahdiehSoleimani](https://github.com/MahdiehSoleimani)
 

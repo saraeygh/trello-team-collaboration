@@ -6,7 +6,7 @@ from workspace.models import Workspace
 class IsProjectAdminOrMemberReadOnly(permissions.BasePermission):
     def has_object_permission(self, request, view, obj):
         try: 
-            pmem = Workspace.objects.get(member=request.user, project=obj)
+            pmem = Workspace.objects.get(member=request.user.id, project=obj)
         except Workspace.DoesNotExist:
             return False
 
