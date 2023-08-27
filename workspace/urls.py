@@ -1,7 +1,6 @@
 from rest_framework_nested import routers
 from .views import (WorkspaceViewSet,
-                    LabelViewSet,
-                    LabledTaskViewSet,
+                    LabeledTaskViewSet,
                     ProjectViewSet,
                     ProjectMemeberViewSet,
                     TaskViewSet,
@@ -13,7 +12,6 @@ router = routers.DefaultRouter()
 router.register('workspaces', WorkspaceViewSet, basename='workspaces')
 router.register('projects', ProjectViewSet, basename='projects')
 router.register('tasks', TaskViewSet, basename='tasks')
-router.register('labels', LabelViewSet, basename='labels')
 
 workspaces_router = routers.NestedDefaultRouter(
      router, 'workspaces', lookup='workspace'
@@ -42,11 +40,8 @@ tasks_router.register(
     'comments', CommentViewSet, basename='tasks-comments'
     )
 
-labels_router = routers.NestedDefaultRouter(
-    router, 'labels', lookup='label'
-    )
-labels_router.register(
-    'labeled-task', LabledTaskViewSet, basename='label-tasks'
+tasks_router.register(
+    'labels', LabeledTaskViewSet, basename='tasks-labels'
     )
 
 urlpatterns = (
@@ -54,5 +49,4 @@ urlpatterns = (
     + workspaces_router.urls
     + projects_router.urls
     + tasks_router.urls
-    + labels_router.urls
     )

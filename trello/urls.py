@@ -21,6 +21,7 @@ from drf_yasg.views import get_schema_view
 from drf_yasg import openapi
 
 
+# Swagger Conf
 schema_view = get_schema_view(
    openapi.Info(
       title="Trello - Group 6 - API",
@@ -34,28 +35,21 @@ schema_view = get_schema_view(
    permission_classes=(permissions.AllowAny,),
 )
 
-admin_urls = [
-    path('admin/', admin.site.urls),
-]
-
-accounts_urls = [
-        path('auth/', include('djoser.urls')),
-        path('auth/', include('djoser.urls.jwt')),
-]
-
-workspace_urls = [
-        path('workspace/', include('workspace.urls')),
+# URL patterns
+api_urls = [
+        path('', include('workspace.urls')),
+        path('', include('accounts.urls')),
+        path('', include('djoser.urls.jwt')),
 ]
 
 development_urls = [
-    path("__debug__/", include("debug_toolbar.urls")),
     path('swagger/', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
     path('redoc/', schema_view.with_ui('redoc', cache_timeout=0), name='schema-redoc'),
+    path("__debug__/", include("debug_toolbar.urls")),
 ]
 
 urlpatterns = (
-    admin_urls
-    + accounts_urls
-    + workspace_urls
-    + development_urls
+    path('admin/', admin.site.urls),
+    path('api/', include(api_urls)),
+    path('', include(development_urls)),
     )
