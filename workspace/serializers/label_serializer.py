@@ -8,12 +8,9 @@ from workspace.serializers import TaskSerializer
 class LabelSerializer(serializers.ModelSerializer):
     # from workspace.serializers import TaskSerializer
 
-    task = TaskSerializer(many=True)
-
     class Meta:
         model = Label
         fields = [
             'id',
             'name',
-            'task',
         ]
