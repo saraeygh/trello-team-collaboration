@@ -32,3 +32,8 @@ class TaskSerializer(serializers.ModelSerializer):
         comments = obj.task_comments()
         comment_data = CommentSerializer(comments, many=True).data
         return comment_data
+
+    def validate(self, data):
+        if data['start_date'] > data['end-date']:
+            raise serializers.ValidationError('finish must occure after start')
+        return data
