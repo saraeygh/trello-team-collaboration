@@ -6,7 +6,7 @@ from workspace.models import Comment
 # Reza
 class CommentSerializer(serializers.ModelSerializer):
 
-    user = UserSummaryDetailSerializer()
+    user = UserSummaryDetailSerializer(read_only=True)
 
     class Meta:
         model = Comment
@@ -17,3 +17,4 @@ class CommentSerializer(serializers.ModelSerializer):
             'text',
             'created_at'
         ]
+        read_only_fields = ('user', 'task', 'created_at')
