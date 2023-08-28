@@ -1,32 +1,37 @@
 from rest_framework_nested import routers
-from .views import (WorkspaceViewSet,
-                    LabelViewSet,
-                    LabledTaskViewSet,
-                    ProjectViewSet,
-                    ProjectMemeberViewSet,
-                    TaskViewSet,
-                    AssignmentViewSet,
-                    CommentViewSet,
-                    )
+from .views import (
+    WorkspaceViewSet,
+    LabeledTaskViewSet,
+    WorkspaceMemberViewSet,
+    ProjectViewSet,
+    WorkspaceProjectViewSet,
+    ProjectMemberViewSet,
+    TaskViewSet,
+    AssignmentViewSet,
+    CommentViewSet,
+    )
 
 router = routers.DefaultRouter()
 router.register('workspaces', WorkspaceViewSet, basename='workspaces')
 router.register('projects', ProjectViewSet, basename='projects')
 router.register('tasks', TaskViewSet, basename='tasks')
-router.register('labels', LabelViewSet, basename='labels')
 
 workspaces_router = routers.NestedDefaultRouter(
      router, 'workspaces', lookup='workspace'
      )
 workspaces_router.register(
-     'projects', ProjectViewSet, basename='workspace-projects'
+     'projects', WorkspaceProjectViewSet, basename='workspace-projects'
      )
+
+workspaces_router.register(
+    'members', WorkspaceMemberViewSet, basename='workspace-members'
+    )
 
 projects_router = routers.NestedDefaultRouter(
     router, 'projects', lookup='project'
     )
 projects_router.register(
-     'members', ProjectMemeberViewSet, basename='project-memebrs'
+     'members', ProjectMemberViewSet, basename='project-memebrs'
      )
 projects_router.register(
      'tasks', TaskViewSet, basename='project-tasks'
@@ -42,11 +47,8 @@ tasks_router.register(
     'comments', CommentViewSet, basename='tasks-comments'
     )
 
-labels_router = routers.NestedDefaultRouter(
-    router, 'labels', lookup='label'
-    )
-labels_router.register(
-    'labeled-task', LabledTaskViewSet, basename='label-tasks'
+tasks_router.register(
+    'labels', LabeledTaskViewSet, basename='tasks-labels'
     )
 
 urlpatterns = (
@@ -54,5 +56,4 @@ urlpatterns = (
     + workspaces_router.urls
     + projects_router.urls
     + tasks_router.urls
-    + labels_router.urls
     )

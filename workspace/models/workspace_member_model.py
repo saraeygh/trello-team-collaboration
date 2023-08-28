@@ -7,7 +7,7 @@ from accounts.models import User
 
 
 # Mahdieh
-class WorkspaceMember(TimeMixin, BaseModel):
+class WorkspaceMember(TimeMixin):
 
     class Access(models.IntegerChoices):
         MEMBER = 1  # Can view and move only own items
@@ -30,3 +30,6 @@ class WorkspaceMember(TimeMixin, BaseModel):
         choices=Access.choices,
         default=1
         )
+
+    class Meta:
+        unique_together = ('workspace', 'member', 'access_level')

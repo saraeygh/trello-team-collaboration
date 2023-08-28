@@ -1,3 +1,4 @@
+from datetime import date
 from django.contrib import admin
 from django.utils.translation import gettext_lazy as _
 
@@ -13,8 +14,9 @@ class ProjectMemberInline(admin.TabularInline):
 # Mahdieh
 @admin.register(Project)
 class ProjectAdmin(BaseAdmin):
-    list_display = ['id', 'name', 'description', 'workspace']
-    readonly_fields = ('created_at', 'deadline') 
+    list_display = ['id', 'soft_delete', 'name', 'description', 'workspace','deadline']
+    list_display_links = ("id", "name", "description", "workspace", "deadline")
+    readonly_fields = ('created_at',)
     inlines = [ProjectMemberInline]
     list_filter = ['created_at', 'updated_at']
     search_fields = ['name']

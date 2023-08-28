@@ -1,65 +1,96 @@
 from django.shortcuts import get_object_or_404
 from django_filters.rest_framework import DjangoFilterBackend
+from requests import Response
 from rest_framework.filters import SearchFilter, OrderingFilter
-from rest_framework.response import Response
 from rest_framework.viewsets import ModelViewSet
-from rest_framework import generics, mixins, status
-from django.db.models import Case, When
-
+from rest_framework import status
 from workspace.paginations import DefaultPagination
-from workspace.models import Project, ProjectMember, Workspace
+from workspace.models import Project, WorkspaceMember, ProjectMember
 from workspace.permisssions import (IsProjectAdminOrMemberReadOnly,
                                     IsProjectMember
                                     )
 from workspace.serializers import (ProjectSerializer,
                                    WorkspaceSerializer,
-                                   ProjectMemberSerializer
+                                   ShortProjectSerializer,
+                                     WorkspaceMemberSerializer,
+                                     ProjectMemberSerializer
+
                                    )
 
+class ProjectViewSet(ModelViewSet):
+    http_method_names = ['get', 'header', 'options']
+    def get_queryset(self):
+        return ProjectMember.objects.filter(member=self.request.user.id).\
+            filter(soft_delete=False)
 
-# # Reza
+    def get_serializer_class(self):
+         if self.request.method == 'GET':
+             return ProjectMemberSerializer
+
+         #return ProjectSerializer
+
+
+# # # Reza
+# # class ProjectViewSet(ModelViewSet):
+# #     serializer_class = ProjectSerializer
+# #
+# #     def get_queryset(self):
+# #         workspace_id = self.kwargs.get('workspace_pk')
+# #         if workspace_id is None:
+# #             return Project.objects.all()
+# #         return Project.objects.filter(workspace_id=workspace_id)
+# #
+# #     def get_serializer_context(self):
+# #         return {
+# #             'request': self.request,
+# #             'workspace_id': self.kwargs.get('workspace_pk'),
+# #             }
+#
+# # Mahdieh
 # class ProjectViewSet(ModelViewSet):
-#     serializer_class = ProjectSerializer
+#     #serializer_class = [ProjectSerializer]
+#     filter_backends = [DjangoFilterBackend, SearchFilter, OrderingFilter]
+#     pagination_class = DefaultPagination
+#     ordering_fields = ['updated_at']
+#
+#
+#     def get_serializer_class(self):
+#         if self.request.method == 'GET':
+#             return ShortProjectSerializer
+#
+#         return ProjectSerializer
+#
+#     #def get_permissions(self):
+#     #    if self.request.method in ['PUT','PATCH', 'DELETE']:
+#     #        return [IsProjectAdminOrMemberReadOnly()]
+#     #    return [IsProjectMember()]
 #
 #     def get_queryset(self):
 #         workspace_id = self.kwargs.get('workspace_pk')
 #         if workspace_id is None:
-#             return Project.objects.all()
-#         return Project.objects.filter(workspace_id=workspace_id)
+#             return Project.objects.filter(member=self.request.user.id).filter(soft_delete=False)
 #
-#     def get_serializer_context(self):
-#         return {
-#             'request': self.request,
-#             'workspace_id': self.kwargs.get('workspace_pk'),
-#             }
-
-
-# Mahdieh
-class ProjectViewSet(ModelViewSet):
-    serializer_class = ProjectSerializer
-    filter_backends = [DjangoFilterBackend, SearchFilter, OrderingFilter]
-    pagination_class = DefaultPagination
-    search_fields = ['name', 'description']
-    ordering_fields = ['updated_at']
-
-    def get_queryset(self):
-        # Sort by access_level so projects where you're admin at top
-        project_ids = Workspace.objects.filter(
-            member=self.request.user).\
-                order_by('-access_level').\
-                    values_list('project__id', flat=True)
-
-        preserved = Case(*[When(pk=pk, then=pos)
-                           for pos, pk in enumerate(project_ids)])
-        return Project.objects.filter(pk__in=project_ids).order_by(preserved)
-    
-
-    def get_serializer_context(self):
-         return {
-             'request': self.request,
-             'workspace_id': self.kwargs.get('workspace_pk'),
-             }
-
-
-
-
+#         return Project.objects.filter(workspace_id=workspace_id)\
+#             .filter(member=self.request.user.id).filter(soft_delete=False)
+#
+#     # def create(self, request, *args, **kwargs):
+#     #     serializer = WorkspaceSerializer(
+#     #         data=request.data,
+#     #         context={'user_id': self.request.user.id})
+#     #     serializer.is_valid(raise_exception=True)
+#     #     workspace = serializer.save()
+#     #     serializer = ProjectSerializer(workspace)
+#     #     return Response(serializer.data)
+#
+#
+#     # def put(self, request, pk):
+#     #     proj = get_object_or_404(Project, pk=pk)
+#     #     self.check_object_permissions(self.request, proj)
+#     #     serializer = ProjectSerializer(proj, data=request.data)
+#     #     if serializer.is_valid():
+#     #         serializer.save()
+#     #         return Response(serializer.data)
+#     #     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+#
+#     def perform_create(self, serializer):
+#         serializer.save(owner=self.request.user)

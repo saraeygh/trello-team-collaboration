@@ -20,5 +20,8 @@ class LabeledTask(TimeMixin, models.Model):
         on_delete=models.CASCADE,
         )
 
+    class Meta:
+        unique_together = ('label', 'task')
+
     def __str__(self):
         return f"Label '{self.label.name}' on task '{self.task.title}'"
