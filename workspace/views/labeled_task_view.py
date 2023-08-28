@@ -1,6 +1,7 @@
 from rest_framework import status
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.response import Response
+from rest_framework.exceptions import MethodNotAllowed
 
 from workspace.serializers import LabeledTaskSerializer
 from workspace.models import LabeledTask, Label
@@ -16,6 +17,11 @@ class LabeledTaskViewSet(ModelViewSet):
     def get_serializer_context(self):
         task_id = self.kwargs.get('task_pk')
         return {'task_id': task_id}
+
+    def list(self, request, *args, **kwargs):
+        if request.method == 'GET':
+            raise MethodNotAllowed(request.method)
+        return super().list(request, *args, **kwargs)
 
     def retrieve(self, request, *args, **kwargs):
         task_id = self.kwargs.get('task_pk')
