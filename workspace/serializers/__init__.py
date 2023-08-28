@@ -1,6 +1,7 @@
 from .workspace_serializer import WorkspaceSerializer
 from .workspace_member_serializer import WorkspaceMemberSerializer
 from .project_serializer import ProjectSerializer
+from .workspace_project_serializer import WorkspaceProjectSerializer
 from .short_project_serializer import ShortProjectSerializer
 from .project_member_serializer import ProjectMemberSerializer
 from .comment_serializer import CommentSerializer

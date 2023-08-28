@@ -2,9 +2,9 @@ from rest_framework_nested import routers
 from .views import (
     WorkspaceViewSet,
     LabeledTaskViewSet,
-    # WorkspaceMemberViewSet,
+    WorkspaceMemberViewSet,
     ProjectViewSet,
-    SubProjectViewSet,
+    WorkspaceProjectViewSet,
     ProjectMemberViewSet,
     TaskViewSet,
     AssignmentViewSet,
@@ -20,12 +20,12 @@ workspaces_router = routers.NestedDefaultRouter(
      router, 'workspaces', lookup='workspace'
      )
 workspaces_router.register(
-     'projects', SubProjectViewSet, basename='workspace-projects'
+     'projects', WorkspaceProjectViewSet, basename='workspace-projects'
      )
 
-#workspaces_router.register(
-#     'members', WorkspaceMemberViewSet, basename='workspace-members'
-#     )
+workspaces_router.register(
+    'members', WorkspaceMemberViewSet, basename='workspace-members'
+    )
 
 projects_router = routers.NestedDefaultRouter(
     router, 'projects', lookup='project'

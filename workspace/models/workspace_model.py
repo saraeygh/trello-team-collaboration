@@ -22,7 +22,7 @@ class Workspace(TimeMixin, BaseModel):
 
     member = models.ManyToManyField(
         User,
-        through='WorkspaceMember', 
+        through='WorkspaceMember',
         )
 
     def __str__(self):

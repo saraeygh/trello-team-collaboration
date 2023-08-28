@@ -8,16 +8,20 @@ from workspace.serializers import WorkspaceSerializer
 # Mahdieh
 class WorkspaceMemberSerializer(serializers.ModelSerializer):
 
-    workspace = WorkspaceSerializer()
+    workspace = serializers.StringRelatedField()
+    member = UserSummaryDetailSerializer()
 
     class Meta:
         model = WorkspaceMember
         fields = [
             'id',
             'workspace',
-            'access_level', 
+            'member',
+            'access_level',
             'created_at',
         ]
+        read_only_fields = ("workspace", "created_at")
+        write_only_fields = ("member", "access_level")
 
     # def create(self, validated_data):
     #     workspace_data = validated_data.pop('workspace')

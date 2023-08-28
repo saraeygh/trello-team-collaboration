@@ -19,7 +19,6 @@ class ProjectSerializer(serializers.ModelSerializer):
         fields = [
             'id',
             'name',
-            #'owner',
             'member',
             'description',
             'workspace',

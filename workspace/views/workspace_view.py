@@ -12,42 +12,65 @@ from workspace.permisssions import IsProjectAdminOrMemberReadOnly, IsProjectMemb
 # Mahdieh
 class WorkspaceViewSet(ModelViewSet):
 
-    #permission_classes = [IsProjectMember]
+    serializer_class = WorkspaceSerializer
+    # permission_classes = [IsProjectMember]
 
     def get_queryset(self):
-        return WorkspaceMember.objects.filter(member=self.request.user.id).\
-            filter(soft_delete=False)
-    
-    def get_serializer_class(self):
-        #workspace_id =self.kwargs.get('pk')
+        return Workspace.objects.filter(soft_delete=False).filter(member=self.request.user.id)
 
-        if self.request.method == 'GET':
-            return WorkspaceMemberSerializer
-        
-        elif self.request.method == 'POST':
-            return WorkspaceSerializer
-        
-        elif self.request.method in ['PUT', 'PATCH']:
-            return WorkspaceSerializer
-        
     def create(self, request, *args, **kwargs):
         member = self.request.user
         name = self.request.data.get('name')
-        description = self.request.data.get('descrition')
+        description = self.request.data.get('description')
+
         if name is None or name == "":
-            return Response ({'error':"insert name"})
+            return Response(
+                {'Error': "Please insert a name."}
+                )
 
         workspace = Workspace.objects.create(
-            name=name, 
+            name=name,
             description=description
             )
-        workspacemember = WorkspaceMember.objects.create(
+        serializer = WorkspaceSerializer(instance=workspace)
+
+        WorkspaceMember.objects.create(
             workspace=workspace,
             member=member,
             access_level=2,
         )
-        serializer = WorkspaceSerializer(instance=workspace)
+
         return Response(serializer.data)
 
-        
-        
+    def update(self, request, *args, **kwargs):
+        name = self.request.data.get('name')
+        description = self.request.data.get('description')
+
+        if name is None or name == "":
+            return Response(
+                {'Error': "Please insert a name."}
+                )
+        try:
+            workspace = Workspace.objects.get(id=self.kwargs['pk'])
+            workspace.name = name
+            workspace.description = description
+            workspace.save()
+            serializer = WorkspaceSerializer(workspace)
+            return Response(serializer.data)
+
+        except Workspace.DoesNotExist:
+            return Response(
+                {"Error": "Not found"}
+            )
+
+    def destroy(self, request, *args, **kwargs):
+
+        try:
+            workspace = Workspace.objects.get(id=self.kwargs['pk'])
+            workspace.delete()
+            return Response(status=status.HTTP_204_NO_CONTENT)
+
+        except Workspace.DoesNotExist:
+            return Response(
+                {"Error": "Not found"}
+            )

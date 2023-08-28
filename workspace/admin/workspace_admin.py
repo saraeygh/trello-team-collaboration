@@ -13,11 +13,13 @@ class WorkspaceMemberInline(admin.TabularInline):
 @admin.register(Workspace)
 class WorkspaceAdmin(BaseAdmin):
     list_display = [
+        'soft_delete',
         'id',
         'name',
         'description',
         'created_at',
         ]
+    list_display_links = ("id", "name", "description", "created_at")
     list_filter = ['created_at', 'updated_at']
     inlines = [WorkspaceMemberInline]
     date_hierarchy = 'created_at'
