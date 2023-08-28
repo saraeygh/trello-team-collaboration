@@ -2,14 +2,14 @@ from rest_framework import serializers
 
 from accounts.serializers import UserSummaryDetailSerializer
 from workspace.models import ProjectMember, Workspace
-from workspace.serializers import ProjectSerializer, WorkspaceSerializer
+from workspace.serializers import ShortProjectSerializer, WorkspaceSerializer
 from accounts.models import User
 
 
 # Mahdieh
 class ProjectMemberSerializer(serializers.ModelSerializer):
 
-    project = ProjectSerializer()
+    project = ShortProjectSerializer()
     member = UserSummaryDetailSerializer()
 
     class Meta:

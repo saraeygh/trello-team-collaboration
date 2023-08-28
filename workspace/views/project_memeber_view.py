@@ -11,9 +11,10 @@ from workspace.models import WorkspaceMember, Project, Workspace
 from workspace.serializers import WorkspaceMemberSerializer, ProjectMemberSerializer
 from workspace.permisssions import IsProjectAdminOrMemberReadOnly
 
+
 # Mahdieh
 class ProjectMemberViewSet(ModelViewSet):
-    permission_classes = [IsProjectAdminOrMemberReadOnly]
+    #permission_classes = [IsProjectAdminOrMemberReadOnly]
     filter_backends = [DjangoFilterBackend, SearchFilter, OrderingFilter]
     pagination_class = DefaultPagination
     ordering_fields = ['updated_at']
