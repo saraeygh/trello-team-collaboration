@@ -10,15 +10,12 @@ from workspace.serializers import (
     )
 
 
-
 # Mahdieh
 class WorkspaceMemberViewSet(ModelViewSet):
 
-    # permission_classes = [IsProjectMember]
-
     def get_queryset(self):
         workspace_id = self.kwargs.get('workspace_pk')
-        return WorkspaceMember.objects.filter(workspace_id=workspace_id)
+        return WorkspaceMember.objects.filter(workspace_id=workspace_id).prefetch_related("member").select_related("workspace")
 
     def get_serializer_class(self):
         if self.request.method == 'GET':
