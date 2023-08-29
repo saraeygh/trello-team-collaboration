@@ -58,6 +58,8 @@ class Task(TimeMixin, BaseModel):
         )
 
     due_date = models.DateTimeField(
+        blank=True,
+        null=True,
         verbose_name=_("Due Date"),
         help_text="The date and time by which the task should be completed."
         )

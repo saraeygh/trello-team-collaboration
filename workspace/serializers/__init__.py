@@ -4,8 +4,8 @@ from .project_serializer import CreateProjectSerializer, RetrieveProjectSerializ
 from .short_project_serializer import ShortProjectSerializer
 from .project_member_serializer import RetrieveProjectMemberSerializer, CreateProjectMemberSerializer
 from .comment_serializer import CreateCommentSerializer, RetrieveCommentSerializer
-from .task_serializer import TaskSerializer
+from .task_serializer import RetrieveTaskSerializer, CreateTaskSerializer
 from .task_summary_serializer import TaskSummarySerializer
 from .label_serializer import LabelSerializer
-from .assignment_serializer import AssignmentSerializer
+from .assignment_serializer import RetrieveAssignmentSerializer, CreateAssignmentSerializer
 from .labeled_task_serializer import RetrieveLabeledTaskSerializer

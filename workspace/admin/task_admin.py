@@ -8,13 +8,25 @@ from workspace.models import Task
 # Hossein
 @admin.register(Task)
 class TaskModelAdmin(BaseAdmin):
-    list_display = ("title",
-                    "start_date",
-                    "due_date",
-                    "status",
-                    "priority",
-                    "project"
-                    )
+    list_display = (
+        "id",
+        "title",
+        "start_date",
+        "due_date",
+        "status",
+        "priority",
+        "project",
+        "soft_delete"
+        )
+    list_display_links = (
+        "id",
+        "title",
+        "start_date",
+        "due_date",
+        "status",
+        "priority",
+        "project",
+        )
     list_filter = ("status", "priority")
     search_fields = ("title", "description", "assigned_to__username")
     date_hierarchy = "due_date"
