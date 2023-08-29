@@ -1,7 +1,10 @@
+import logging
 from rest_framework import serializers
 
 from workspace.models import Project
 from accounts.serializers import UserSummaryDetailSerializer
+
+logger = logging.getLogger(__name__)
 
 
 class CreateProjectSerializer(serializers.ModelSerializer):
@@ -19,6 +22,7 @@ class CreateProjectSerializer(serializers.ModelSerializer):
         validated_data['workspace'] = self.context['workspace']
         project = Project(**validated_data)
         project.save()
+        logger.info(f"New project saved.")
         return project
 
 
