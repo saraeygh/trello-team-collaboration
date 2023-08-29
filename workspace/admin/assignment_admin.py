@@ -7,7 +7,8 @@ from workspace.models import Assignment
 # Hossein
 @admin.register(Assignment)
 class AssignmentModelAdmin(admin.ModelAdmin):
-    list_display = ('task', 'assigned_to', 'assigned_by', 'created_at')
+    list_display = ('id', 'task', 'assigned_to', 'assigned_by', 'created_at')
+    list_display_links = ('task', 'assigned_to', 'assigned_by', 'created_at')
     list_filter = ('created_at',)
     search_fields = (
         'task__title',

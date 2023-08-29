@@ -2,7 +2,6 @@ from rest_framework import serializers
 
 from accounts.serializers import UserSummaryDetailSerializer
 from workspace.models import WorkspaceMember
-from workspace.serializers import RetrieveWorkspaceSerializer
 
 
 # Mahdieh
@@ -24,7 +23,7 @@ class AddWorkspaceMemberSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         validated_data['workspace'] = self.context['workspace']
         try:
-            workspace=validated_data["workspace"]
+            workspace = validated_data["workspace"]
             member = WorkspaceMember.objects.get(
                 member_id=validated_data["member"],
                 workspace_id=workspace.id

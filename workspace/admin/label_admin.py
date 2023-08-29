@@ -8,7 +8,8 @@ from workspace.models import Label
 # Reza
 @admin.register(Label)
 class LabelAdmin(admin.ModelAdmin):
-    list_display = ('name', 'used_count', 'created_at', 'updated_at')
+    list_display = ('id', 'name', 'used_count', 'created_at', 'updated_at')
+    list_display_links = ('name', 'used_count', 'created_at', 'updated_at')
     search_fields = ('name',)
     date_hierarchy = 'updated_at'
 

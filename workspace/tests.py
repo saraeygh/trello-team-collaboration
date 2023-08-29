@@ -1,6 +1,14 @@
 from django.test import TestCase
 from django.utils import timezone
-from .models import Project, Task, Assignment, Comment, Label, LabeledTask, Workspace
+from .models import (
+    Project,
+    Task,
+    Assignment,
+    Comment,
+    Label,
+    LabeledTask,
+    Workspace
+)
 from accounts.models import User
 
 

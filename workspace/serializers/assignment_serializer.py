@@ -1,7 +1,6 @@
 from rest_framework import serializers
 
 from workspace.models import Assignment
-from workspace.serializers import RetrieveTaskSerializer
 
 
 # Hosein

@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from accounts.serializers import UserSummaryDetailSerializer
+
 from workspace.models import Comment
 
 
