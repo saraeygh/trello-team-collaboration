@@ -1,7 +1,10 @@
+import logging
 from rest_framework import serializers
 
 from accounts.serializers import UserSummaryDetailSerializer
 from workspace.models import WorkspaceMember
+
+logger = logging.getLogger(__name__)
 
 
 # Mahdieh
@@ -17,6 +20,7 @@ class AddWorkspaceMemberSerializer(serializers.ModelSerializer):
 
     def validate_access_level(self, value):
         if value not in [1, 2]:
+            logger.error(f"Invalid access level {value}")
             return serializers.ValidationError("Not valid access level.")
         return value
 
@@ -32,8 +36,10 @@ class AddWorkspaceMemberSerializer(serializers.ModelSerializer):
             member.save()
             return member
         except WorkspaceMember.DoesNotExist:
+            logger.info(f"No such memeber in workspace.")
             member = WorkspaceMember(**validated_data)
             member.save()
+            logger.info(f"New member {member} added.")
             return member
 
 
@@ -47,6 +53,7 @@ class UpdateWorkspaceMemberSerializer(serializers.ModelSerializer):
 
     def validate_access_level(self, value):
         if value not in [1, 2]:
+            logger.error(f"Invalid access level {value}")
             return serializers.ValidationError("Not valid access level.")
         return value
 

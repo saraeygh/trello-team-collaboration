@@ -1,8 +1,11 @@
+import logging
 from rest_framework import serializers
 from rest_framework.validators import UniqueValidator
 
 from accounts.models import User
 from . import ProfileSerializer
+
+logger = logging.getLogger(__name__)
 
 
 class UserDetailSerializer(serializers.ModelSerializer):
@@ -31,5 +34,6 @@ class UserDetailSerializer(serializers.ModelSerializer):
             for attr, value in profile_data.items():
                 setattr(profile_instance, attr, value)
             profile_instance.save()
+            logger.info(f"User profile updated.")
 
         return super().update(instance, validated_data)

@@ -1,7 +1,9 @@
+import logging
 from rest_framework import serializers
 
 from accounts.serializers import UserSummaryDetailSerializer
 from workspace.models import ProjectMember
+logger = logging.getLogger(__name__)
 
 
 class CreateProjectMemberSerializer(serializers.ModelSerializer):
@@ -25,6 +27,7 @@ class CreateProjectMemberSerializer(serializers.ModelSerializer):
         except ProjectMember.DoesNotExist:
             member = ProjectMember(**validated_data)
             member.save()
+            logger.info(f"No such member in project, added new member {member}")
             return member
 
 
