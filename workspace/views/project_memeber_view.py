@@ -6,7 +6,7 @@ from rest_framework.response import Response
 from workspace.paginations import DefaultPagination
 from workspace.models import ProjectMember, Project
 from workspace.serializers import RetrieveProjectMemberSerializer, CreateProjectMemberSerializer
-from workspace.permisssions import IsProjectAdminOrMemberReadOnly
+from workspace.permissions import IsProjectAdminOrMemberReadOnly
 
 
 # Mahdieh
