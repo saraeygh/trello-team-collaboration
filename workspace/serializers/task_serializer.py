@@ -5,11 +5,11 @@ from accounts.serializers import UserSummaryDetailSerializer
 
 
 # Hossein
-class TaskSerializer(serializers.ModelSerializer):
+class RetrieveTaskSerializer(serializers.ModelSerializer):
     remaining_time = serializers.ReadOnlyField()
     is_overdue = serializers.ReadOnlyField()
-    task_comments = serializers.SerializerMethodField()
     assigned_to = UserSummaryDetailSerializer(many=True)
+    project = serializers.StringRelatedField()
 
     class Meta:
         model = Task
@@ -20,7 +20,6 @@ class TaskSerializer(serializers.ModelSerializer):
             "status",
             "remaining_time",
             "is_overdue",
-            "task_comments",
             "start_date",
             "due_date",
             "priority",
@@ -28,12 +27,34 @@ class TaskSerializer(serializers.ModelSerializer):
             "assigned_to"
             ]
 
-    def get_task_comments(self, obj):
-        comments = obj.task_comments()
-        comment_data = RetrieveCommentSerializer(comments, many=True).data
-        return comment_data
+
+class CreateTaskSerializer(serializers.ModelSerializer):
+    start_date = serializers.DateTimeField()
+    end_date = serializers.DateTimeField()
+    class Meta:
+        model = Task
+        fields = [
+            "id",
+            "title",
+            "description",
+            "status",
+            "start_date",
+            "due_date",
+            "end_date",
+            "priority",
+            ]
 
     def validate(self, data):
-        if data['start_date'] > data['end-date']:
-            raise serializers.ValidationError('finish must occure after start')
-        return data
+        try:
+            start_date = data["start_date"]
+            end_date = data["end_date"]
+        except KeyError:
+            return data    
+        if start_date > end_date:
+            raise serializers.ValidationError('finish must occur after start')
+    
+    def create(self, validated_data):
+        validated_data["project"]=self.context["project"]
+        task = Task(**validated_data)
+        task.save()
+        return task
