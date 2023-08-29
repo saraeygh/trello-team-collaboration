@@ -1,84 +1,25 @@
-from datetime import datetime
-from django.core.exceptions import ValidationError
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.response import Response
-from rest_framework import status
-from accounts.models import User
+
 from workspace.models import Project, Workspace
-from workspace.serializers import WorkspaceProjectSerializer
+from workspace.serializers import RetrieveProjectSerializer, CreateProjectSerializer
 
 
 class WorkspaceProjectViewSet(ModelViewSet):
-
-    serializer_class = WorkspaceProjectSerializer
 
     def get_queryset(self):
         workspace_id = self.kwargs.get('workspace_pk')
         return Project.objects.filter(soft_delete=False).filter(workspace_id=workspace_id)
 
-    def create(self, request, *args, **kwargs):
-        name = self.request.data.get('name')
-        if name is None or name == '':
-            return Response(
-                {
-                    "Error": "Invalid name"
-                }, status=status.HTTP_400_BAD_REQUEST
-            )
+    def get_serializer_class(self):
+        if self.request.method == 'GET':
+            return RetrieveProjectSerializer
+        return CreateProjectSerializer
 
-        description = self.request.data.get('description')
-        deadline = self.request.data.get('deadline')
-        workspace = self.kwargs.get('workspace_pk')
-        member = self.request.user
-
+    def get_serializer_context(self):
         try:
-            workspace = Workspace.objects.get(id=workspace)
+            workspace = Workspace.objects.get(id=self.kwargs.get('workspace_pk'))
         except Workspace.DoesNotExist:
-            return Response(
-                {"Error": "Workspace does not exist."}
-            )
+            return Response({"Error": "Not valid workspace."})
+        return {"workspace": workspace}
 
-        project = Project.objects.create(
-            name=name,
-            description=description,
-            deadline=deadline,
-            workspace=workspace,
-        )
-        serializer = WorkspaceProjectSerializer(project)
-        return Response(serializer.data)
-
-    def update(self, request, *args, **kwargs):
-        name = self.request.data.get('name')
-        description = self.request.data.get('description')
-        deadline = self.request.data.get('deadline')
-        project_id = self.kwargs.get('pk')
-
-        if name is None or name == '':
-            return Response(
-                {
-                    "Error": "Invalid name"
-                }, status=status.HTTP_400_BAD_REQUEST
-            )
-
-        try:
-            deadline = datetime.strptime(deadline, '%Y-%m-%d')
-        except ValueError:
-            return Response(
-                {
-                    "Error": "Invalid DateTime format"
-                }
-            )
-
-        try:
-            project = Project.objects.get(id=project_id)
-        except Workspace.DoesNotExist:
-            return Response(
-                {"Error": "Project does not exist."}
-            )
-
-        project.name = name
-        project.description = description
-        project.deadline = deadline
-        project.save()
-
-        serializer = WorkspaceProjectSerializer(project)
-        return Response(serializer.data)

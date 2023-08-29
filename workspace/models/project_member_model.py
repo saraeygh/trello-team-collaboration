@@ -7,7 +7,7 @@ from accounts.models import User
 
 
 # Mahdieh
-class ProjectMember(TimeMixin, BaseModel):
+class ProjectMember(TimeMixin):
 
     project = models.ForeignKey(
         Project,

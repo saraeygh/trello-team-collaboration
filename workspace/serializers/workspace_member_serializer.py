@@ -2,11 +2,58 @@ from rest_framework import serializers
 
 from accounts.serializers import UserSummaryDetailSerializer
 from workspace.models import WorkspaceMember
-from workspace.serializers import WorkspaceSerializer
+from workspace.serializers import RetrieveWorkspaceSerializer
 
 
 # Mahdieh
-class WorkspaceMemberSerializer(serializers.ModelSerializer):
+class AddWorkspaceMemberSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = WorkspaceMember
+        fields = [
+            'id',
+            'member',
+            'access_level',
+        ]
+
+    def validate_access_level(self, value):
+        if value not in [1, 2]:
+            return serializers.ValidationError("Not valid access level.")
+        return value
+
+    def create(self, validated_data):
+        validated_data['workspace'] = self.context['workspace']
+        try:
+            workspace=validated_data["workspace"]
+            member = WorkspaceMember.objects.get(
+                member_id=validated_data["member"],
+                workspace_id=workspace.id
+                )
+            member.access_level = validated_data.get("access_level", 1)
+            member.save()
+            return member
+        except WorkspaceMember.DoesNotExist:
+            member = WorkspaceMember(**validated_data)
+            member.save()
+            return member
+
+
+class UpdateWorkspaceMemberSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = WorkspaceMember
+        fields = [
+            'access_level',
+        ]
+
+    def validate_access_level(self, value):
+        if value not in [1, 2]:
+            return serializers.ValidationError("Not valid access level.")
+        return value
+
+
+# Mahdieh
+class RetrieveWorkspaceMemberSerializer(serializers.ModelSerializer):
 
     workspace = serializers.StringRelatedField()
     member = UserSummaryDetailSerializer()
@@ -22,27 +69,3 @@ class WorkspaceMemberSerializer(serializers.ModelSerializer):
         ]
         read_only_fields = ("workspace", "created_at")
         write_only_fields = ("member", "access_level")
-
-    # def create(self, validated_data):
-    #     workspace_data = validated_data.pop('workspace')
-    #     member_data = validated_data.pop('member')
-    #
-    #     workspace_member = WorkspaceMember.objects.create(
-    #         **validated_data,
-    #         **member_data,
-    #         **workspace_data
-    #         )
-    #     for member_data in member_data:
-    #         member_serializer = UserSummaryDetailSerializer(data=member_data)
-    #         if member_serializer.is_valid():
-    #             member = member_serializer.save()
-    #             workspace_member.member.add(member)
-    #         else:
-    #             raise serializers.ValidationError()
-    #
-    #     return workspace_member 
-    
-    #def validate(self, value):
-        #if self.member < 2:
-        #    raise serializers.ValidationError('Team must include 2 person or more than')
-        #return value

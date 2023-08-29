@@ -3,10 +3,28 @@ from accounts.serializers import UserSummaryDetailSerializer
 from workspace.models import Comment
 
 
-# Reza
-class CommentSerializer(serializers.ModelSerializer):
+class CreateCommentSerializer(serializers.ModelSerializer):
 
-    user = UserSummaryDetailSerializer(read_only=True)
+    class Meta:
+        model = Comment
+        fields = [
+            'id',
+            'text',
+        ]
+
+    def create(self, validated_data):
+        validated_data['user'] = self.context['user']
+        validated_data['task'] = self.context['task']
+        comment = Comment(**validated_data)
+        comment.save()
+        return comment
+
+
+# Reza
+class RetrieveCommentSerializer(serializers.ModelSerializer):
+
+    user = serializers.StringRelatedField()
+    task = serializers.StringRelatedField()
 
     class Meta:
         model = Comment
@@ -17,4 +35,3 @@ class CommentSerializer(serializers.ModelSerializer):
             'text',
             'created_at'
         ]
-        read_only_fields = ('user', 'task', 'created_at')
