@@ -16,6 +16,7 @@ class ProfileInLine(admin.StackedInline):
 class UserAdmin(BaseAdmin, BaseUserAdmin):
     list_select_related = ['profile']
     list_display = ("soft_delete",
+                    "id",
                     "username",
                     "email",
                     "full_name",
@@ -25,7 +26,7 @@ class UserAdmin(BaseAdmin, BaseUserAdmin):
                     "date_joined",
                     )
 
-    list_display_links = ("username", "email", "full_name")
+    list_display_links = ("username", "email", "full_name", "phone", "gender", "birthdate")
     list_filter = ('soft_delete', 'is_staff')
     ordering = ("-date_joined", "username")
     date_hierarchy = "date_joined"

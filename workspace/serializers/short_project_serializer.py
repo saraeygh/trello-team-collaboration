@@ -6,8 +6,8 @@ from accounts.serializers import UserSummaryDetailSerializer
 
 # Mahdieh
 class ShortProjectSerializer(serializers.ModelSerializer):
-    
-    member= UserSummaryDetailSerializer(many=True)
+
+    member = UserSummaryDetailSerializer(many=True)
 
     class Meta:
         model = Project

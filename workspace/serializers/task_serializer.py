@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from workspace.serializers import RetrieveCommentSerializer
+
 from workspace.models import Task
 from accounts.serializers import UserSummaryDetailSerializer
 
@@ -31,6 +31,7 @@ class RetrieveTaskSerializer(serializers.ModelSerializer):
 class CreateTaskSerializer(serializers.ModelSerializer):
     start_date = serializers.DateTimeField()
     end_date = serializers.DateTimeField()
+
     class Meta:
         model = Task
         fields = [
@@ -44,15 +45,15 @@ class CreateTaskSerializer(serializers.ModelSerializer):
             "priority",
             ]
 
-    def validate(self, data):
+    def validate(self, attrs):
         try:
-            start_date = data["start_date"]
-            end_date = data["end_date"]
+            start_date = attrs["start_date"]
+            end_date = attrs["end_date"]
         except KeyError:
-            return data    
+            return attrs
         if start_date > end_date:
             raise serializers.ValidationError('finish must occur after start')
-    
+
     def create(self, validated_data):
         validated_data["project"]=self.context["project"]
         task = Task(**validated_data)

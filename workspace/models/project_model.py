@@ -45,15 +45,3 @@ class Project(TimeMixin, BaseModel):
     class Meta:
         verbose_name = _("Project")
         verbose_name_plural = _("Projects")
-
-    #def get_active_tasks(self):
-    #    return self.task_set.filter(status__in=["todo", "doing"])
-
-    #def get_completed_tasks(self):
-    #    return self.task_set.filter(status="done")
-
-    #def get_overdue_tasks(self):
-    #    return self.task_set.filter(
-    #        due_date__lt=timezone.now(),
-    #        status__in=["todo", "doing"]
-    #        )

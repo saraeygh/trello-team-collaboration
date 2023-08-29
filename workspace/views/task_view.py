@@ -1,10 +1,9 @@
-from rest_framework.viewsets import ModelViewSet
-from rest_framework.response import Response
 from django.shortcuts import get_object_or_404
+from rest_framework.viewsets import ModelViewSet
 
 from workspace.models import Task, Project
 from workspace.serializers import (
-    RetrieveTaskSerializer, 
+    RetrieveTaskSerializer,
     CreateTaskSerializer
 )
 
@@ -15,24 +14,14 @@ class TaskViewSet(ModelViewSet):
 
     def get_queryset(self):
         project_id = self.kwargs.get('project_pk')
-    
+
         return Task.objects.filter(soft_delete=False).\
             filter(project_id=project_id)
-    
+
     def get_serializer_class(self):
         if self.request.method == "GET":
             return RetrieveTaskSerializer
         return CreateTaskSerializer
-    
-    # def get_serializer_context(self):
-    #     project_id = self.kwargs.get("project_pk")
-    #     try:
-    #         project = Project.objects.get(id=project_id)
-    #     except Project.DoesNotExist:
-    #         return Response({"error" : "invalid data"})
-    #     return {
-    #         'project': project
-    #     }
 
     def get_serializer_context(self):
         project = get_object_or_404(

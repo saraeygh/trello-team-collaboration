@@ -17,20 +17,6 @@ class LabeledTaskViewSet(ModelViewSet):
             return RetrieveLabeledTaskSerializer
         return LabelSerializer
 
-    # def get_serializer_context(self):
-    #     try:
-    #         name = self.request.data["name"]
-    #         task = Task.objects.get(id=self.kwargs.get('task_pk'))
-    #     except Task.DoesNotExist:
-    #         return Response({"Error": "Not valid task."})
-    #     except KeyError:
-    #         return Response({"Error": "Not valid name."})
-
-    #     return {
-    #         "task": task,
-    #         "name": name,
-    #         }
-    
     def get_serializer_context(self, *args, **kwargs):
         try:
             name = self.request.data["name"]

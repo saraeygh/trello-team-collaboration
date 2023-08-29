@@ -1,5 +1,5 @@
+from django.shortcuts import get_object_or_404
 from rest_framework.viewsets import ModelViewSet
-from rest_framework.response import Response
 
 from workspace.models import Comment, Task
 from workspace.serializers import CreateCommentSerializer, RetrieveCommentSerializer
@@ -20,10 +20,7 @@ class CommentViewSet(ModelViewSet):
 
     def get_serializer_context(self):
         user = self.request.user
-        try:
-            task = Task.objects.get(id=self.kwargs.get('task_pk'))
-        except Task.DoesNotExist:
-            return Response({"Error": "Not valid task."})
+        task = get_object_or_404(Task, id=self.kwargs.get('task_pk'))
         return {
             "user": user,
             "task": task
