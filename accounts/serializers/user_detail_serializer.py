@@ -1,9 +1,11 @@
-from django.db import transaction
+import logging
 from rest_framework import serializers
 from rest_framework.validators import UniqueValidator
 
-from accounts.models import User, Profile
+from accounts.models import User
 from . import ProfileSerializer
+
+logger = logging.getLogger(__name__)
 
 
 class UserDetailSerializer(serializers.ModelSerializer):
@@ -28,10 +30,10 @@ class UserDetailSerializer(serializers.ModelSerializer):
     def update(self, instance, validated_data):
         profile_data = validated_data.pop('profile', None)
         if profile_data:
-            # Update the nested 'profile' field if provided
             profile_instance = instance.profile
             for attr, value in profile_data.items():
                 setattr(profile_instance, attr, value)
             profile_instance.save()
+            logger.info(f"User profile updated.")
 
         return super().update(instance, validated_data)

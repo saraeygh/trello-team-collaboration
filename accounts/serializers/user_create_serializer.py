@@ -1,8 +1,12 @@
+import logging
 from django.db import transaction
 from rest_framework import serializers
 
 from accounts.serializers import ProfileSerializer
 from accounts.models import User, Profile
+
+logger = logging.getLogger(__name__)
+
 
 
 class UserCreateSerializer(serializers.ModelSerializer):
@@ -33,6 +37,13 @@ class UserCreateSerializer(serializers.ModelSerializer):
             user = User(**validated_data)
             user.set_password(password)
             user.save()
-
+            logger.info(f"user {user} created.")
             Profile.objects.create(user=user, **profile_data)
+            logger.info(f"A user profile created for {user}.")
         return user
+
+    def validate_username(self, value):
+        if value in ["root", "admin"]:
+            logger.error(f"A user tried to set {value} as username.")
+            raise serializers.ValidationError("username cant be used")
+        return value

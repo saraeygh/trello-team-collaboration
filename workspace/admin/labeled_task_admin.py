@@ -7,6 +7,7 @@ from workspace.models import LabeledTask
 
 @admin.register(LabeledTask)
 class LabeledTaskAdmin(admin.ModelAdmin):
-    list_display = ('label', 'task', 'created_at', 'updated_at')
+    list_display = ('id', 'label', 'task', 'created_at', 'updated_at')
+    list_display_links = ('label', 'task', 'created_at', 'updated_at')
     search_fields = ('label', 'task')
     date_hierarchy = 'updated_at'

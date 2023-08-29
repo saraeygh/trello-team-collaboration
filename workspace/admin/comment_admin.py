@@ -8,7 +8,7 @@ from workspace.models import Comment
 # Reza
 @admin.register(Comment)
 class CommentAdmin(BaseAdmin):
-    list_display = ('user', 'task', 'text', 'soft_delete')
+    list_display = ('id', 'user', 'task', 'text', 'soft_delete')
     search_fields = ('user', 'task', 'text')
     list_display_links = ('user', 'task', 'text')
     list_filter = ('soft_delete',)

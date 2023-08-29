@@ -1,30 +1,27 @@
+from django.shortcuts import get_object_or_404
 from rest_framework.viewsets import ModelViewSet
-from rest_framework.response import Response
-from drf_yasg.utils import swagger_auto_schema
 
 from workspace.models import Comment, Task
-from workspace.serializers import CommentSerializer
+from workspace.serializers import CreateCommentSerializer, RetrieveCommentSerializer
 
 
+# Reza
 class CommentViewSet(ModelViewSet):
-    http_method_names = ('get', 'post', 'patch', 'delete', 'header', 'options')
-    serializer_class = CommentSerializer
+    serializer_class = RetrieveCommentSerializer
 
     def get_queryset(self):
         task_id = self.kwargs.get('task_pk')
-        return Comment.objects.filter(task_id=task_id).filter(soft_delete=False)
+        return Comment.objects.filter(soft_delete=False).filter(task_id=task_id)
+
+    def get_serializer_class(self):
+        if self.request.method == 'GET':
+            return RetrieveCommentSerializer
+        return CreateCommentSerializer
 
     def get_serializer_context(self):
-        task_id = self.kwargs.get('task_pk')
-        return {'task_id': task_id}
-
-    def create(self, request, *args, **kwargs):
         user = self.request.user
-        task = Task.objects.get(id=self.kwargs.get('task_pk'))
-        comment = Comment.objects.create(
-            text=self.request.data['text'],
-            user=user,
-            task=task
-            )
-        serializer = CommentSerializer(instance=comment)
-        return Response(serializer.data)
+        task = get_object_or_404(Task, id=self.kwargs.get('task_pk'))
+        return {
+            "user": user,
+            "task": task
+            }

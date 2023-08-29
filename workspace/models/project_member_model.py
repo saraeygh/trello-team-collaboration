@@ -1,13 +1,13 @@
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
-from core.models import BaseModel, TimeMixin
+from core.models import TimeMixin
 from workspace.models import Project
 from accounts.models import User
 
 
 # Mahdieh
-class ProjectMember(TimeMixin, BaseModel):
+class ProjectMember(TimeMixin):
 
     project = models.ForeignKey(
         Project,
