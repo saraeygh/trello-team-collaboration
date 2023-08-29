@@ -36,3 +36,8 @@ class UserCreateSerializer(serializers.ModelSerializer):
 
             Profile.objects.create(user=user, **profile_data)
         return user
+
+    def validate_username(self, value):
+        if value in ["root", "admin"]:
+            raise serializers.ValidationError("username cant be used")
+        return value
