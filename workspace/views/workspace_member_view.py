@@ -1,18 +1,13 @@
-from django.db.utils import IntegrityError
 from django.shortcuts import get_object_or_404
-from rest_framework.views import APIView
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.response import Response
-from rest_framework import status
 
-from accounts.models import User
 from workspace.models import Workspace, WorkspaceMember
 from workspace.serializers import (
     RetrieveWorkspaceMemberSerializer,
     AddWorkspaceMemberSerializer,
     UpdateWorkspaceMemberSerializer
     )
-from workspace.permisssions import IsProjectAdminOrMemberReadOnly, IsProjectMember
 
 
 
@@ -32,9 +27,16 @@ class WorkspaceMemberViewSet(ModelViewSet):
             return UpdateWorkspaceMemberSerializer
         return AddWorkspaceMemberSerializer
 
+    # def get_serializer_context(self):
+    #     try:
+    #         workspace = Workspace.objects.get(id=self.kwargs.get('workspace_pk'))
+    #     except Workspace.DoesNotExist:
+    #         return Response({"Error": "Not valid workspace."})
+    #     return {"workspace": workspace}
+
     def get_serializer_context(self):
-        try:
-            workspace = Workspace.objects.get(id=self.kwargs.get('workspace_pk'))
-        except Workspace.DoesNotExist:
-            return Response({"Error": "Not valid workspace."})
+        workspace = get_object_or_404(
+            Workspace,
+            id=self.kwargs.get('workspace_pk')
+        )
         return {"workspace": workspace}
