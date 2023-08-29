@@ -1,8 +1,10 @@
 from rest_framework import serializers
+import logging
 
 from workspace.models import Comment
 
 
+logger = logging.getLogger(__name__)
 class CreateCommentSerializer(serializers.ModelSerializer):
 
     class Meta:
@@ -17,6 +19,7 @@ class CreateCommentSerializer(serializers.ModelSerializer):
         validated_data['task'] = self.context['task']
         comment = Comment(**validated_data)
         comment.save()
+        logger.info(f"new comment {Comment}")
         return comment
 
 

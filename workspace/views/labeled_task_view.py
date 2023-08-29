@@ -1,11 +1,12 @@
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.response import Response
 from django.shortcuts import get_object_or_404
-
+import logging
 from workspace.serializers import LabelSerializer, RetrieveLabeledTaskSerializer
 from workspace.models import LabeledTask, Task
 
 
+logger = logging.getLogger(__name__)
 class LabeledTaskViewSet(ModelViewSet):
 
     def get_queryset(self):
@@ -21,6 +22,7 @@ class LabeledTaskViewSet(ModelViewSet):
         try:
             name = self.request.data["name"]
         except KeyError:
+            logger.error('invalid name for task')
             return Response({"Error": "Not valid name."})
         task = get_object_or_404(
             Task,
