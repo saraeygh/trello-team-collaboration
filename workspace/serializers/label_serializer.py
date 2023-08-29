@@ -1,9 +1,10 @@
 from django.db.utils import IntegrityError
 from rest_framework import serializers
+import logging
 
 from workspace.models import Label, LabeledTask
 
-
+logger = logging.getLogger(__name__)
 # Reza
 class LabelSerializer(serializers.ModelSerializer):
 
@@ -22,8 +23,10 @@ class LabelSerializer(serializers.ModelSerializer):
         try:
             labeled_task = LabeledTask(**validated_data)
             labeled_task.save()
+            logger.info(f"new label {Label}" )
             return label
         except IntegrityError:
+            logger.error('label already exists.')
             raise serializers.ValidationError("Already exists.")
 
     def to_representation(self, instance):
