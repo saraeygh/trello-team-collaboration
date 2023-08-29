@@ -70,4 +70,3 @@ class ModelTestCase(TestCase):
         self.assertEqual(
             str(labeled_task), "Label 'Test Label' on task 'Test Task'"
         )
-
