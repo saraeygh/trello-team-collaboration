@@ -1,15 +1,38 @@
 from rest_framework import serializers
 
 from accounts.serializers import UserSummaryDetailSerializer
-from workspace.models import ProjectMember, Workspace
-from workspace.serializers import ShortProjectSerializer, WorkspaceSerializer
+from workspace.models import ProjectMember
 from accounts.models import User
 
 
-# Mahdieh
-class ProjectMemberSerializer(serializers.ModelSerializer):
+class CreateProjectMemberSerializer(serializers.ModelSerializer):
 
-    project = ShortProjectSerializer()
+    class Meta:
+        model = ProjectMember
+        fields = [
+            'id',
+            'member',
+        ]
+
+    def create(self, validated_data):
+        validated_data['project'] = self.context['project']
+        try:
+            project = validated_data["project"]
+            member = ProjectMember.objects.get(
+                member_id=validated_data["member"],
+                project_id=project.id
+                )
+            return member
+        except ProjectMember.DoesNotExist:
+            member = ProjectMember(**validated_data)
+            member.save()
+            return member
+
+
+# Mahdieh
+class RetrieveProjectMemberSerializer(serializers.ModelSerializer):
+
+    project = serializers.StringRelatedField()
     member = UserSummaryDetailSerializer()
 
     class Meta:
@@ -19,18 +42,3 @@ class ProjectMemberSerializer(serializers.ModelSerializer):
             'project',
             'member',
         ]
-
-    def create(self, validated_data):
-        project_data = validated_data.pop('project')
-        member = User(**validated_data)
-        member.save()
-
-        project = ProjectMember.objects.create(user=member, **project_data)
-        return project
-    
-    def get_members(self, obj):
-        queryset = Workspace.objects.filter(project=obj)
-        return WorkspaceSerializer(
-            queryset, 
-            many=True, 
-            context={"request": self.context['request']}).data

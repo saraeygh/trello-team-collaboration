@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from workspace.serializers import CommentSerializer
+from workspace.serializers import RetrieveCommentSerializer
 from workspace.models import Task
 from accounts.serializers import UserSummaryDetailSerializer
 
@@ -30,7 +30,7 @@ class TaskSerializer(serializers.ModelSerializer):
 
     def get_task_comments(self, obj):
         comments = obj.task_comments()
-        comment_data = CommentSerializer(comments, many=True).data
+        comment_data = RetrieveCommentSerializer(comments, many=True).data
         return comment_data
 
     def validate(self, data):
