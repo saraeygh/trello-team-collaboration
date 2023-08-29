@@ -1,6 +1,8 @@
 from rest_framework import serializers
-
+import logging
 from workspace.models import Assignment
+
+logger = logging.getLogger(__name__)
 
 
 # Hosein
@@ -32,4 +34,5 @@ class CreateAssignmentSerializer(serializers.ModelSerializer):
         validated_data["assigned_by"] = self.context.get("user")
         assignment = Assignment(**validated_data)
         assignment.save()
+        logger.info(f" assigned to user success:{Assignment}")
         return assignment

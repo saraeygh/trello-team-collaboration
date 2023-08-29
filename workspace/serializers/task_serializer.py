@@ -1,9 +1,10 @@
 from rest_framework import serializers
-
+import logging
 from workspace.models import Task
 from accounts.serializers import UserSummaryDetailSerializer
+from datetime import datetime
 
-
+logger = logging.getLogger(__name__)
 # Hossein
 class RetrieveTaskSerializer(serializers.ModelSerializer):
     remaining_time = serializers.ReadOnlyField()
@@ -29,8 +30,8 @@ class RetrieveTaskSerializer(serializers.ModelSerializer):
 
 
 class CreateTaskSerializer(serializers.ModelSerializer):
-    start_date = serializers.DateTimeField()
-    end_date = serializers.DateTimeField()
+    # start_date = serializers.DateTimeField()
+    # end_date = serializers.DateTimeField()
 
     class Meta:
         model = Task
@@ -44,6 +45,15 @@ class CreateTaskSerializer(serializers.ModelSerializer):
             "end_date",
             "priority",
             ]
+        
+    def validate_end_date(self, value):
+        date_format = "YYYY-MM-DDThh:mm[:ss[.uuuuuu]][+HH:MM|-HH:MM|Z]"
+        try:
+            datetime.strptime(value, date_format)
+        except ValueError:
+            logger.error(f"invalid datetime or format{Task}")
+            raise serializers.ValidationError("invalid datetime field")
+        return value    
 
     def validate(self, attrs):
         try:
@@ -52,10 +62,12 @@ class CreateTaskSerializer(serializers.ModelSerializer):
         except KeyError:
             return attrs
         if start_date > end_date:
+            logger.error(f"finish must occur after start{Task}")
             raise serializers.ValidationError('finish must occur after start')
 
     def create(self, validated_data):
         validated_data["project"]=self.context["project"]
         task = Task(**validated_data)
         task.save()
+        logger.info(f"task created:{Task}")
         return task
