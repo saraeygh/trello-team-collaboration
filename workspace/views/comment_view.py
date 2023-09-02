@@ -1,17 +1,18 @@
 from django.shortcuts import get_object_or_404
-from rest_framework.viewsets import ModelViewSet
 
+from core.views import BaseViewSet
 from workspace.models import Comment, Task
 from workspace.serializers import CreateCommentSerializer, RetrieveCommentSerializer
 
 
 # Reza
-class CommentViewSet(ModelViewSet):
+class CommentViewSet(BaseViewSet):
     serializer_class = RetrieveCommentSerializer
 
     def get_queryset(self):
         task_id = self.kwargs.get('task_pk')
-        return Comment.objects.filter(soft_delete=False).filter(task_id=task_id)
+        return Comment.objects.filter(soft_delete=False).\
+            filter(task_id=task_id)
 
     def get_serializer_class(self):
         if self.request.method == 'GET':

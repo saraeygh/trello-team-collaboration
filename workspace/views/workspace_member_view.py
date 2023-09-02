@@ -1,6 +1,7 @@
 from django.shortcuts import get_object_or_404
-from rest_framework.viewsets import ModelViewSet
 
+from workspace.permissions import IsMemberOrReadOnly
+from core.views import BaseViewSet
 from workspace.models import Workspace, WorkspaceMember
 from workspace.serializers import (
     RetrieveWorkspaceMemberSerializer,
@@ -10,11 +11,13 @@ from workspace.serializers import (
 
 
 # Mahdieh
-class WorkspaceMemberViewSet(ModelViewSet):
+class WorkspaceMemberViewSet(BaseViewSet):
+    permission_classes = [IsMemberOrReadOnly]
 
     def get_queryset(self):
         workspace_id = self.kwargs.get('workspace_pk')
-        return WorkspaceMember.objects.filter(workspace_id=workspace_id).prefetch_related("member").select_related("workspace")
+        return WorkspaceMember.objects.select_related("workspace").\
+            prefetch_related("member").filter(workspace_id=workspace_id)
 
     def get_serializer_class(self):
         if self.request.method == 'GET':

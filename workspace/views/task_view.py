@@ -1,5 +1,6 @@
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.response import Response
+
 from workspace.models import Task, Project
 from workspace.serializers import RetrieveTaskSerializer, CreateTaskSerializer
 import logging
@@ -13,7 +14,8 @@ class TaskViewSet(ModelViewSet):
     def get_queryset(self):
         project_id = self.kwargs.get('project_pk')
         
-        return Task.objects.filter(soft_delete=False).filter(project_id=project_id)
+        return Task.objects.filter(soft_delete=False).\
+            filter(project_id=project_id)
     
     def get_serializer_class(self):
         if self.request.method == "GET":
@@ -25,7 +27,7 @@ class TaskViewSet(ModelViewSet):
         try:
             project = Project.objects.get(id=project_id)
         except Project.DoesNotExist:
-            logger.error(f"project not exist{Project}")
+            logger.error(f"project not exist {Project}")
             return Response({"error" : "invalid data"})
         return {
             'project': project
