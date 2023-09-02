@@ -1,5 +1,6 @@
-from rest_framework import serializers
 import logging
+from rest_framework import serializers
+
 from workspace.models import Assignment
 
 logger = logging.getLogger(__name__)

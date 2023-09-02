@@ -19,8 +19,8 @@ router.register('projects', ProjectViewSet, basename='projects')
 router.register('tasks', TaskViewSetNone, basename='tasks')
 
 workspaces_router = routers.NestedDefaultRouter(router, 'workspaces', lookup='workspace')
-workspaces_router.register('projects', WorkspaceProjectViewSet, basename='workspace-projects')
 workspaces_router.register('members', WorkspaceMemberViewSet, basename='workspace-members')
+workspaces_router.register('projects', WorkspaceProjectViewSet, basename='workspace-projects')
 
 projects_router = routers.NestedDefaultRouter(router, 'projects', lookup='project')
 projects_router.register('members', ProjectMemberViewSet, basename='project-memebrs')

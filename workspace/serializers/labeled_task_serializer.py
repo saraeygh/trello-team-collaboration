@@ -7,6 +7,7 @@ from workspace.serializers import LabelSerializer
 # Reza
 class RetrieveLabeledTaskSerializer(serializers.ModelSerializer):
 
+    task = serializers.StringRelatedField()
     label = LabelSerializer()
 
     class Meta:
