@@ -14,7 +14,10 @@ class WorkspaceMemberViewSet(ModelViewSet):
 
     def get_queryset(self):
         workspace_id = self.kwargs.get('workspace_pk')
-        return WorkspaceMember.objects.filter(workspace_id=workspace_id).prefetch_related("member").select_related("workspace")
+        return WorkspaceMember.objects.\
+            filter(workspace_id=workspace_id).\
+            prefetch_related("member").\
+            select_related("workspace")
 
     def get_serializer_class(self):
         if self.request.method == 'GET':

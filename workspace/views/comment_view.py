@@ -1,8 +1,12 @@
+from django.db.models import Q
 from django.shortcuts import get_object_or_404
 from rest_framework.viewsets import ModelViewSet
 
 from workspace.models import Comment, Task
-from workspace.serializers import CreateCommentSerializer, RetrieveCommentSerializer
+from workspace.serializers import (
+    CreateCommentSerializer,
+    RetrieveCommentSerializer
+    )
 
 
 # Reza
@@ -11,7 +15,10 @@ class CommentViewSet(ModelViewSet):
 
     def get_queryset(self):
         task_id = self.kwargs.get('task_pk')
-        return Comment.objects.filter(soft_delete=False).filter(task_id=task_id)
+        return Comment.objects.\
+            filter(Q(soft_delete=False) & Q(task_id=task_id)).\
+            select_related('user').\
+            select_related('task')
 
     def get_serializer_class(self):
         if self.request.method == 'GET':

@@ -5,6 +5,8 @@ from accounts.serializers import UserSummaryDetailSerializer
 from datetime import datetime
 
 logger = logging.getLogger(__name__)
+
+
 # Hossein
 class RetrieveTaskSerializer(serializers.ModelSerializer):
     remaining_time = serializers.ReadOnlyField()
@@ -45,7 +47,7 @@ class CreateTaskSerializer(serializers.ModelSerializer):
             "end_date",
             "priority",
             ]
-        
+
     def validate_end_date(self, value):
         date_format = "YYYY-MM-DDThh:mm[:ss[.uuuuuu]][+HH:MM|-HH:MM|Z]"
         try:

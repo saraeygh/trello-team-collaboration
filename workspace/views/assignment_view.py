@@ -13,7 +13,9 @@ class AssignmentViewSet(ModelViewSet):
 
     def get_queryset(self):
         task_id = self.kwargs.get('task_pk')
-        return Assignment.objects.filter(task_id=task_id)
+        return Assignment.objects.filter(task_id=task_id).\
+        select_related('assigned_by').\
+        select_related('assigned_to')
 
     def get_serializer_class(self):
         if self.request.method == "GET":

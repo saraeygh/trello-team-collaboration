@@ -34,5 +34,5 @@ class CreateAssignmentSerializer(serializers.ModelSerializer):
         validated_data["assigned_by"] = self.context.get("user")
         assignment = Assignment(**validated_data)
         assignment.save()
-        logger.info(f" assigned to user success:{Assignment}")
+        logger.info(f" assigned to user success:{assignment}")
         return assignment
