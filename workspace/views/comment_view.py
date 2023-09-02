@@ -1,8 +1,10 @@
 from django.db.models import Q
 from django.shortcuts import get_object_or_404
 from rest_framework.viewsets import ModelViewSet
+from rest_framework.permissions import IsAuthenticated
 
 from workspace.models import Comment, Task
+from workspace.permissions import HasTaskAccess, IsCommentWriter
 from workspace.serializers import (
     CreateCommentSerializer,
     RetrieveCommentSerializer
@@ -12,6 +14,12 @@ from workspace.serializers import (
 # Reza
 class CommentViewSet(ModelViewSet):
     serializer_class = RetrieveCommentSerializer
+    permission_classes = [IsAuthenticated, HasTaskAccess]
+
+    def get_permissions(self):
+        if self.request.method in ['GET', 'POST', 'HEADER', 'OPTIONS']:
+            return [IsAuthenticated(), HasTaskAccess()]
+        return [IsAuthenticated(), HasTaskAccess(), IsCommentWriter()]
 
     def get_queryset(self):
         task_id = self.kwargs.get('task_pk')

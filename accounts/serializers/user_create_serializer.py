@@ -1,5 +1,6 @@
 import logging
 from django.db import transaction
+from django.contrib.auth import password_validation
 from rest_framework import serializers
 
 from accounts.serializers import ProfileSerializer
@@ -8,8 +9,11 @@ from accounts.models import User, Profile
 logger = logging.getLogger(__name__)
 
 
-
 class UserCreateSerializer(serializers.ModelSerializer):
+
+    password = serializers.CharField(
+        validators=[password_validation.validate_password]
+    )
     profile = ProfileSerializer()
 
     class Meta:

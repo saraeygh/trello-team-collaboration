@@ -32,10 +32,10 @@ api_urls = [
 ]
 
 development_urls = [
-    path('swagger/', SpectacularSwaggerView.as_view(url_name='schema'), name='swagger'),
     path('redoc/', SpectacularRedocView.as_view(url_name='schema'), name='redoc'),
-    path("__debug__/", include("debug_toolbar.urls")),
+    path('swagger/', SpectacularSwaggerView.as_view(url_name='schema'), name='swagger'),
     path('get-schema-yaml/', SpectacularAPIView.as_view(), name='schema'),
+    path("__debug__/", include("debug_toolbar.urls")),
 ]
 
 urlpatterns = (
