@@ -1,3 +1,4 @@
+from django.db.models import Q
 from django.shortcuts import get_object_or_404
 from rest_framework.viewsets import ModelViewSet
 
@@ -9,7 +10,10 @@ class WorkspaceProjectViewSet(ModelViewSet):
 
     def get_queryset(self):
         workspace_id = self.kwargs.get('workspace_pk')
-        return Project.objects.filter(soft_delete=False).filter(workspace_id=workspace_id)
+        return Project.objects.\
+            filter(Q(soft_delete=False) & Q(workspace_id=workspace_id)).\
+            select_related("workspace").\
+            prefetch_related("member")
 
     def get_serializer_class(self):
         if self.request.method == 'GET':

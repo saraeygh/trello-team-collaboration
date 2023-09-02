@@ -1,3 +1,4 @@
+from django.db.models import Q
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.response import Response
 from workspace.models import Task, Project
@@ -12,14 +13,15 @@ class TaskViewSet(ModelViewSet):
 
     def get_queryset(self):
         project_id = self.kwargs.get('project_pk')
-        
-        return Task.objects.filter(soft_delete=False).filter(project_id=project_id)
-    
+        return Task.objects.\
+            filter(Q(soft_delete=False) & Q(project_id=project_id)).\
+            prefetch_related('assigned_to')
+
     def get_serializer_class(self):
         if self.request.method == "GET":
             return RetrieveTaskSerializer
         return CreateTaskSerializer
-    
+
     def get_serializer_context(self):
         project_id = self.kwargs.get("project_pk")
         try:
@@ -30,7 +32,7 @@ class TaskViewSet(ModelViewSet):
         return {
             'project': project
         }
-        
+
 
 class TaskViewSetNone(ModelViewSet):
     http_method_names = ["header", "options"]

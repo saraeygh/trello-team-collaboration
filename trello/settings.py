@@ -47,7 +47,6 @@ THIRD_PARTY_APPS = [
     'djoser',
     'django_filters',
     'debug_toolbar',
-    'drf_yasg',
     'drf_spectacular',
 ]
 
@@ -211,8 +210,8 @@ REST_FRAMEWORK = {
 }
 
 SPECTACULAR_SETTINGS = {
-    'TITLE': 'Your Project API',
-    'DESCRIPTION': 'Your project description',
+    'TITLE': 'Group 6 - Trello API',
+    'DESCRIPTION': 'A Trello-like web app for team collaboration.',
     'VERSION': '1.0.0',
     'SERVE_INCLUDE_SCHEMA': False,
 }

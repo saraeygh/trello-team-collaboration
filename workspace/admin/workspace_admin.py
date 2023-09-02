@@ -9,6 +9,7 @@ from workspace.models import Workspace, WorkspaceMember
 class WorkspaceMemberInline(admin.TabularInline):
     model = WorkspaceMember
 
+
 #Mahdieh
 @admin.register(Workspace)
 class WorkspaceAdmin(BaseAdmin):
@@ -36,3 +37,7 @@ class WorkspaceAdmin(BaseAdmin):
                 )
         }),
     )
+
+    def get_queryset(self, request):
+        workspaces = super().get_queryset(request)
+        return workspaces.prefetch_related('member')
