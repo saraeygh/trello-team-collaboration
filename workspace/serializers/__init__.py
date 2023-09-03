@@ -1,8 +1,8 @@
 from .workspace_image_seriallizer import WorkspaceImageSerializer
 from .workspace_serializer import CreateWorkspaceSerializer, RetrieveWorkspaceSerializer
 from .workspace_member_serializer import RetrieveWorkspaceMemberSerializer, UpdateWorkspaceMemberSerializer, AddWorkspaceMemberSerializer
-from .project_serializer import CreateProjectSerializer, RetrieveProjectSerializer
 from .short_project_serializer import ShortProjectSerializer
+from .project_serializer import CreateProjectSerializer, RetrieveProjectSerializer
 from .project_member_serializer import RetrieveProjectMemberSerializer, CreateProjectMemberSerializer
 from .comment_serializer import CreateCommentSerializer, RetrieveCommentSerializer
 from .task_serializer import RetrieveTaskSerializer, CreateTaskSerializer

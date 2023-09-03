@@ -5,6 +5,7 @@ from core.views import BaseViewSet
 from workspace.serializers import LabelSerializer, RetrieveLabeledTaskSerializer
 from workspace.models import LabeledTask, Task
 
+
 # Reza
 class LabeledTaskViewSet(BaseViewSet):
 

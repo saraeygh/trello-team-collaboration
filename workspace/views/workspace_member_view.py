@@ -1,6 +1,5 @@
 from django.shortcuts import get_object_or_404
 
-from workspace.permissions import IsMemberOrReadOnly
 from core.views import BaseViewSet
 from workspace.models import Workspace, WorkspaceMember
 from workspace.serializers import (
@@ -12,7 +11,6 @@ from workspace.serializers import (
 
 # Mahdieh
 class WorkspaceMemberViewSet(BaseViewSet):
-    permission_classes = [IsMemberOrReadOnly]
 
     def get_queryset(self):
         workspace_id = self.kwargs.get('workspace_pk')

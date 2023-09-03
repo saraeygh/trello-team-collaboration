@@ -23,6 +23,7 @@ class WorkspaceViewSet(BaseViewSet):
 
 
 class WorkspaceImageViewSet(ModelViewSet):
+    
     serializer_class = WorkspaceImageSerializer
 
     def get_serializer_context(self):

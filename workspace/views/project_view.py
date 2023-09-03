@@ -6,7 +6,7 @@ from workspace.serializers import (
 )
 
 
-class ProjectViewSet(ModelViewSet):
+class ProjectViewSet(ModelViewSet): 
     http_method_names = ('header', 'options')
     queryset = Project.objects.all()
     serializer_class = RetrieveProjectSerializer

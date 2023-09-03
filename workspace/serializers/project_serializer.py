@@ -4,8 +4,8 @@ from rest_framework import serializers
 from workspace.models import Project
 from accounts.serializers import UserSummaryDetailSerializer
 
-logger = logging.getLogger(__name__)
 
+logger = logging.getLogger(__name__)
 
 class CreateProjectSerializer(serializers.ModelSerializer):
 

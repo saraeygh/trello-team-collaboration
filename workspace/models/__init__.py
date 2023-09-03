@@ -1,6 +1,6 @@
 from .workspace_model import Workspace
-from .workspace_member_model import WorkspaceMember
 from .workspace_image import WorkspaceImage
+from .workspace_member_model import WorkspaceMember
 from .project_model import Project
 from .project_member_model import ProjectMember
 from .comment_model import Comment

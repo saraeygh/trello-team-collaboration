@@ -3,6 +3,7 @@ from django.db import models
 from workspace.models import Workspace
 from workspace.validators import validate_file_size
 
+
 # Mahdieh
 class WorkspaceImage(models.Model):
     workspace = models.OneToOneField(

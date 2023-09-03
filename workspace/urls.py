@@ -14,6 +14,7 @@ from .views import (
     CommentViewSet,
     )
 
+
 router = routers.DefaultRouter()
 router.register('workspaces', WorkspaceViewSet, basename='workspaces')
 router.register('projects', ProjectViewSet, basename='projects')
