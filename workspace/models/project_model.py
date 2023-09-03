@@ -1,6 +1,7 @@
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 from core.models import BaseModel, TimeMixin
+
 from workspace.models import Workspace
 from accounts.models import User
 

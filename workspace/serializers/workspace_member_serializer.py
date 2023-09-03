@@ -35,6 +35,7 @@ class AddWorkspaceMemberSerializer(serializers.ModelSerializer):
             member.access_level = validated_data.get("access_level", 1)
             member.save()
             return member
+        
         except WorkspaceMember.DoesNotExist:
             logger.info(f"No such memeber in workspace.")
             member = WorkspaceMember(**validated_data)

@@ -1,3 +1,4 @@
+from .workspace_image_seriallizer import WorkspaceImageSerializer
 from .workspace_serializer import CreateWorkspaceSerializer, RetrieveWorkspaceSerializer
 from .workspace_member_serializer import RetrieveWorkspaceMemberSerializer, UpdateWorkspaceMemberSerializer, AddWorkspaceMemberSerializer
 from .project_serializer import CreateProjectSerializer, RetrieveProjectSerializer

@@ -5,6 +5,7 @@ from .views import (
     LabeledTaskViewSet,
     WorkspaceMemberViewSet,
     ProjectViewSet,
+    WorkspaceImageViewSet,
     WorkspaceProjectViewSet,
     ProjectMemberViewSet,
     TaskViewSet,
@@ -21,10 +22,12 @@ router.register('tasks', TaskViewSetNone, basename='tasks')
 workspaces_router = routers.NestedDefaultRouter(router, 'workspaces', lookup='workspace')
 workspaces_router.register('projects', WorkspaceProjectViewSet, basename='workspace-projects')
 workspaces_router.register('members', WorkspaceMemberViewSet, basename='workspace-members')
+workspaces_router.register('images', WorkspaceImageViewSet, basename='workspace-images')
 
 projects_router = routers.NestedDefaultRouter(router, 'projects', lookup='project')
 projects_router.register('members', ProjectMemberViewSet, basename='project-memebrs')
 projects_router.register('tasks', TaskViewSet, basename='project-tasks')
+
 
 tasks_router = routers.NestedDefaultRouter(router, 'tasks', lookup='task')
 tasks_router.register('assignments', AssignmentViewSet, basename='tasks-assignments')

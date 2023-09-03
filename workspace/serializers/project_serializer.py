@@ -25,13 +25,16 @@ class CreateProjectSerializer(serializers.ModelSerializer):
         logger.info(f"New project saved.")
         return project
 
+    # def validate_deadline(self, validate_data):
+    #     pass
+
 
 # Mahdieh
 class RetrieveProjectSerializer(serializers.ModelSerializer):
 
     workspace = serializers.StringRelatedField()
     member = UserSummaryDetailSerializer(many=True)
-
+    
     class Meta:
         model = Project
         fields = [
