@@ -7,7 +7,8 @@ from rest_framework.permissions import IsAuthenticated
 
 from workspace.serializers import (
     CreateWorkspaceSerializer,
-    RetrieveWorkspaceSerializer
+    RetrieveWorkspaceSerializer,
+    WorkspaceImageSerializer,
 )
 from workspace.models import Workspace, WorkspaceMember
 
@@ -43,3 +44,17 @@ class WorkspaceViewSet(ModelViewSet):
             {"Error": "Only admins can delete workspaces."},
             status=status.HTTP_403_FORBIDDEN
             )
+
+
+class WorkspaceImageViewSet(ModelViewSet):
+
+    serializer_class = WorkspaceImageSerializer
+    
+    def get_serializer_context(self):
+        return {'workspace_id': self.kwargs['workspace_pk']}
+
+    def get_queryset(self):
+        return WorkspaceImage.objects.filter(
+            workspace_id=self.kwargs['workspace_pk'])
+
+

@@ -1,4 +1,4 @@
-from .workspace_view import WorkspaceViewSet
+from .workspace_view import WorkspaceViewSet, WorkspaceImageViewSet
 from .workspace_member_view import WorkspaceMemberViewSet
 from .project_view import ProjectViewSet
 from .workspace_project_view import WorkspaceProjectViewSet
