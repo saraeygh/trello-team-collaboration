@@ -1,4 +1,5 @@
 from django.contrib import admin
+from django.utils.html import format_html
 from django.utils.translation import gettext_lazy as _
 
 from core.admin import BaseAdmin
@@ -10,7 +11,7 @@ class WorkspaceMemberInline(admin.TabularInline):
     model = WorkspaceMember
 
 
-#Mahdieh
+# Mahdieh
 @admin.register(Workspace)
 class WorkspaceAdmin(BaseAdmin):
     list_display = [
@@ -18,10 +19,10 @@ class WorkspaceAdmin(BaseAdmin):
         'id',
         'name',
         'description',
-        "image",
+        'image',
         'created_at',
         ]
-    list_display_links = ("name", "description", "image", "created_at")
+    list_display_links = ("name", "description", 'image', "created_at")
     list_filter = ['created_at', 'updated_at']
     inlines = [WorkspaceMemberInline]
     date_hierarchy = 'created_at'
@@ -35,7 +36,7 @@ class WorkspaceAdmin(BaseAdmin):
                 'name',
                 'description',
                 'created_at',
-                'image'
+                'image',
                 )
         }),
     )
