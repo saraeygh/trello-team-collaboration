@@ -18,25 +18,32 @@ class WorkspaceAdmin(BaseAdmin):
         'id',
         'name',
         'description',
+        "image",
         'created_at',
         ]
-    list_display_links = ("name", "description", "created_at")
+    list_display_links = ("name", "description", "image", "created_at")
     list_filter = ['created_at', 'updated_at']
     inlines = [WorkspaceMemberInline]
     date_hierarchy = 'created_at'
     ordering = ('-created_at',)
     search_fields = ('name',)
-    readonly_fields = ('created_at',)
+    readonly_fields = ['thumbnil', 'created_at']
 
     fieldsets = (
         (_("Workspace Information"), {
             'fields': (
                 'name',
                 'description',
-                'created_at'
+                'created_at',
+                'image'
                 )
         }),
     )
+
+    def thumbnil(self, instance):
+        if instance.image.name != '':
+            return format_html(f'<img src="{instance.image.url}"/>')
+        return ''
 
     def get_queryset(self, request):
         workspaces = super().get_queryset(request)
