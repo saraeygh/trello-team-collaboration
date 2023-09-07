@@ -31,9 +31,7 @@ api_urls = [
         path('', include('workspace.urls')),
         path('', include('accounts.urls')),
         path('', include('djoser.urls.jwt')),
-] + static(settings.MEDIA_URL,
-                          document_root=settings.MEDIA_ROOT)
-
+]
 development_urls = [
     path('redoc/', SpectacularRedocView.as_view(url_name='schema'), name='redoc'),
     path('swagger/', SpectacularSwaggerView.as_view(url_name='schema'), name='swagger'),
@@ -41,8 +39,8 @@ development_urls = [
     path("__debug__/", include("debug_toolbar.urls")),
 ]
 
-urlpatterns = (
+urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/', include(api_urls)),
     path('', include(development_urls)),
-    )
+ ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
