@@ -15,6 +15,7 @@ class CreateWorkspaceSerializer(serializers.ModelSerializer):
             'id',
             'name',
             'description',
+            'image',
         ]
 
     def validate_name(self, value):
@@ -45,6 +46,7 @@ class RetrieveWorkspaceSerializer(serializers.ModelSerializer):
             'id',
             'name',
             'description',
+            'image',
             'created_at',
             'member',
         ]

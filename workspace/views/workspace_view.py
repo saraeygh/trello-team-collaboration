@@ -5,15 +5,16 @@ from rest_framework.viewsets import ModelViewSet
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 
+from core.views import BaseViewSet
+from workspace.models import Workspace, WorkspaceMember
 from workspace.serializers import (
     CreateWorkspaceSerializer,
     RetrieveWorkspaceSerializer
 )
-from workspace.models import Workspace, WorkspaceMember
 
 
 # Mahdieh
-class WorkspaceViewSet(ModelViewSet):
+class WorkspaceViewSet(BaseViewSet):
 
     permission_classes = [IsAuthenticated]
 

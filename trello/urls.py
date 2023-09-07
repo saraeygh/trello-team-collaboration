@@ -16,6 +16,8 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from django.conf import settings
+from django.conf.urls.static import static
 from rest_framework import permissions
 from drf_spectacular.views import (
         SpectacularAPIView,
@@ -30,7 +32,6 @@ api_urls = [
         path('', include('accounts.urls')),
         path('', include('djoser.urls.jwt')),
 ]
-
 development_urls = [
     path('redoc/', SpectacularRedocView.as_view(url_name='schema'), name='redoc'),
     path('swagger/', SpectacularSwaggerView.as_view(url_name='schema'), name='swagger'),
@@ -38,8 +39,8 @@ development_urls = [
     path("__debug__/", include("debug_toolbar.urls")),
 ]
 
-urlpatterns = (
+urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/', include(api_urls)),
     path('', include(development_urls)),
-    )
+ ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

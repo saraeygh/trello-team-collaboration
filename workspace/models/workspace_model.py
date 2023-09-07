@@ -1,6 +1,7 @@
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
+from workspace.validators import validate_file_size
 from core.models import TimeMixin, BaseModel
 from accounts.models import User
 
@@ -24,6 +25,13 @@ class Workspace(TimeMixin, BaseModel):
         User,
         through='WorkspaceMember',
         )
+
+    image = models.ImageField(
+        upload_to='workspace/images',
+        null=True,
+        blank=True,
+        validators=[validate_file_size],
+    )
 
     def __str__(self):
         return f'{self.name}'
