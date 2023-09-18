@@ -1,3 +1,4 @@
+from doctest import BLANKLINE_MARKER
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
@@ -35,6 +36,13 @@ class Profile(TimeMixin, BaseModel):
         max_length=11,
         blank=True,
         null=True,
+        )
+
+    image = models.ImageField(
+        verbose_name=_("Image"),
+        upload_to="profile/images",
+        blank=True,
+        null=True
         )
 
     user = models.OneToOneField(

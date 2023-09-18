@@ -7,5 +7,4 @@ django-filter==23.2
 markdown==3.4.4
 python-decouple==3.8
 psycopg2-binary==2.9.7
-django-jazzmin==2.6.0
 pillow==10.0.0
