@@ -17,6 +17,7 @@ class ProfileSerializer(serializers.ModelSerializer):
             'gender',
             'phone',
             'birthdate',
+            'image',
         ]
 
     def validate_phone(self, value):
@@ -25,9 +26,3 @@ class ProfileSerializer(serializers.ModelSerializer):
             return value
         logger.error(f"Invalid phone number {value}.")
         raise serializers.ValidationError("Not valid phone number.")
-
-    def validate_birthdate(self, value):
-        if value > date.today():
-            logger.error(f"Invalid birthdate {value} > {date.today()}.")
-            raise serializers.ValidationError("Not Valid birthdate.")
-        return value
