@@ -1,9 +1,9 @@
 from django.db.models import Q
 from django.shortcuts import get_object_or_404
 from rest_framework import status
-from rest_framework.viewsets import ModelViewSet
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
+from drf_spectacular.utils import extend_schema
 
 from core.views import BaseViewSet
 from workspace.models import Workspace, WorkspaceMember
@@ -14,6 +14,7 @@ from workspace.serializers import (
 
 
 # Mahdieh
+@extend_schema(tags=["Workspaces"])
 class WorkspaceViewSet(BaseViewSet):
 
     permission_classes = [IsAuthenticated]

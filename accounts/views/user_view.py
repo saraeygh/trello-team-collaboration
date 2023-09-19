@@ -3,10 +3,11 @@ from rest_framework.response import Response
 from rest_framework import status
 from djoser import views
 from djoser.conf import settings
+from drf_spectacular.utils import extend_schema
 
 logger = logging.getLogger(__name__)
 
-
+@extend_schema(tags=["Accounts"])
 class CustomeUserViewSet(views.UserViewSet):
 
     def get_queryset(self):

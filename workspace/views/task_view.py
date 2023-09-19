@@ -2,6 +2,7 @@ from django.db.models import Q
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
+from drf_spectacular.utils import extend_schema
 
 from workspace.models import Task, Project
 from workspace.permissions import IsProjectMemebr
@@ -11,6 +12,7 @@ import logging
 logger = logging.getLogger(__name__)
 
 
+@extend_schema(tags=["Tasks"])
 class TaskViewSet(ModelViewSet):
     http_method_names = ["get", "post", "patch", "delete", "header", "options"]
     permission_classes = [IsAuthenticated, IsProjectMemebr]

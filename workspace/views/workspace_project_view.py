@@ -1,6 +1,7 @@
 from django.db.models import Q
 from django.shortcuts import get_object_or_404
 from rest_framework.permissions import IsAuthenticated, SAFE_METHODS
+from drf_spectacular.utils import extend_schema
 
 from core.views import BaseViewSet
 from workspace.models import Project, Workspace
@@ -10,7 +11,7 @@ from workspace.serializers import (
     CreateProjectSerializer
     )
 
-
+@extend_schema(tags=["Projects"])
 class WorkspaceProjectViewSet(BaseViewSet):
 
     def get_permissions(self):

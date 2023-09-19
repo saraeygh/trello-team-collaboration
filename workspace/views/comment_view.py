@@ -2,6 +2,7 @@ from django.db.models import Q
 from django.shortcuts import get_object_or_404
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.permissions import IsAuthenticated
+from drf_spectacular.utils import extend_schema
 
 from workspace.models import Comment, Task
 from workspace.permissions import HasTaskAccess, IsCommentWriter
@@ -12,6 +13,7 @@ from workspace.serializers import (
 
 
 # Reza
+@extend_schema(tags=["Comments"])
 class CommentViewSet(ModelViewSet):
     serializer_class = RetrieveCommentSerializer
     permission_classes = [IsAuthenticated, HasTaskAccess]

@@ -1,6 +1,7 @@
 from django.shortcuts import get_object_or_404
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.permissions import IsAuthenticated, SAFE_METHODS
+from drf_spectacular.utils import extend_schema
 
 from workspace.models import ProjectMember, Project
 from workspace.permissions import IsProjectMemebr
@@ -11,6 +12,7 @@ from workspace.serializers import (
 
 
 # Mahdieh
+@extend_schema(tags=["Project members"])
 class ProjectMemberViewSet(ModelViewSet):
     http_method_names = ('get', 'post', 'delete', 'header', 'options')
     permission_classes = [IsAuthenticated, IsProjectMemebr]

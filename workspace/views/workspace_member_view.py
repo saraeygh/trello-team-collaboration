@@ -1,6 +1,7 @@
 from django.shortcuts import get_object_or_404
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.permissions import IsAuthenticated, SAFE_METHODS
+from drf_spectacular.utils import extend_schema
 
 from workspace.models import Workspace, WorkspaceMember
 from workspace.permissions import IsWorkspaceMemebr, HasAdminLevel
@@ -12,6 +13,7 @@ from workspace.serializers import (
 
 
 # Mahdieh
+@extend_schema(tags=["Workspace Members"])
 class WorkspaceMemberViewSet(ModelViewSet):
 
     def get_permissions(self):
