@@ -35,7 +35,9 @@ ALLOWED_HOSTS = [
     "mytrello.darkube.app",
     "https://mytrello.darkube.app",
 ]
-
+CSRF_TRUSTED_ORIGINS = [
+    "https://mytrello.darkube.app",
+]
 INTERNAL_IPS = [
     '127.0.0.1',
 ]
