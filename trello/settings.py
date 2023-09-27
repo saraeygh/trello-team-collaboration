@@ -30,7 +30,9 @@ DEBUG = config('DEBUG', default=True)
 
 ALLOWED_HOSTS = [
     "0.0.0.0",
-    "127.0.0.1"
+    "127.0.0.1",
+    "darkube.app",
+    "trello6.darkube.app",
 ]
 
 INTERNAL_IPS = [

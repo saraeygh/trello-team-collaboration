@@ -34,3 +34,5 @@ docker-compose.yml
 erd.jpg
 trello.pdf
 general.log
+.vscode
+media/
