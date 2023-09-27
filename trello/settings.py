@@ -33,6 +33,7 @@ ALLOWED_HOSTS = [
     "127.0.0.1",
     "darkube.app",
     "mytrello.darkube.app",
+    "https://mytrello.darkube.app",
 ]
 
 INTERNAL_IPS = [
