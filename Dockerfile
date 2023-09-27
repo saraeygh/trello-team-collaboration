@@ -1,7 +1,5 @@
 FROM python:alpine3.18
 
-ENV PYTHONDONTWRITEBYTECODE=1
-ENV PYTHONUNBUFFERED=1
 ENV DEBUG=True
 ENV SECRET_KEY=django-insecure-=(8*a1#nry)h4o=d!i#ch3$vi%e@k=2564x3a^ad!2e_j45l6n
 ENV DB_ENGINE=django.db.backends.sqlite3
@@ -12,9 +10,8 @@ USER app
 
 WORKDIR /app
 
-COPY ./requirements /app/
-RUN pip install -r base.txt
-RUN pip install -r development.txt
+COPY ./requirements.txt /app/
+RUN pip install -r requirements.txt
 
 COPY . /app/
 

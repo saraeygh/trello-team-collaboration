@@ -8,3 +8,5 @@ markdown==3.4.4
 python-decouple==3.8
 psycopg2-binary==2.9.7
 pillow==10.0.0
+drf-spectacular==0.26.4
+django-debug-toolbar==4.1.0
